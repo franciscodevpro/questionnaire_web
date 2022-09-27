@@ -1,0 +1,62 @@
+.main {
+    position: relative;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.main > nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    color: #3730A3;
+    z-index: 1;
+    border-right: 1px solid #EFEFEF;
+    box-shadow: 0 0 5px #EFEFEF;
+}
+
+.main > nav > ul {
+    flex: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.main > nav > ul header {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.main > nav > ul header span {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.main > nav ul {
+    list-style: none;
+}
+.main > nav > ul ul {
+    padding-left: 10px;
+}
+.main > nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.main > header, .main > nav > header, .main > nav > * > header {
+    height: 64px;
+}
+
+.main > header, .main > main, .main > footer {
+    position: relative;
+    right: 0;
+    margin-left: 260px;;
+    width: calc(100% - 260px);
+}
+
+.main > header {
+    box-shadow: 0 0px 10px #ccc;
+}
