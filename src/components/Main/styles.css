@@ -52,11 +52,50 @@
 
 .main > header, .main > main, .main > footer {
     position: relative;
+    box-sizing: border-box;
     right: 0;
     margin-left: 260px;;
     width: calc(100% - 260px);
 }
 
+.main > nav > footer {
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    background-color: #EEF2FF;
+}
+
+.main > nav > footer .profile-icon {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: #ccc;
+    border-radius: 100%;
+}
+
+.main > nav > footer header {
+    font-weight: 600;
+}
+.main > nav > footer p {
+    font-size: .87rem;
+}
+
 .main > header {
     box-shadow: 0 0px 10px #ccc;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 24px;
+    font-weight: bold;
+    color: #3730A3;
+}
+
+.main > main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 24px;
 }

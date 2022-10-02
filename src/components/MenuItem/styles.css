@@ -9,13 +9,13 @@
 }
 
 .active {
-    background-color: #E0E7FF
+    background-color: #E0E7FF;
+    font-weight: bold;
 }
 ul ul li {
     padding: 5px;
     padding-left: 20px;
     border-radius: 7px;
-    font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

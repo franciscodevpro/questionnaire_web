@@ -1,0 +1,121 @@
+.main-button {
+    width: 100%;
+    margin-bottom: 24px;
+}
+.main-button .save-questionnaire {
+    background-color: #99f;
+    padding: 8px 40px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #3730A3;
+}
+
+.questionnaire-form input[type=text], .questionnaire-form input[type=number] {
+    padding: 16px;
+    border: none;
+    outline: none;
+    background-color: #D9D9D9;
+    font-weight: bold;
+    color: #707070;
+}
+
+.questionnaire-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.questionnaire-form p {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.questionnaire-form p.name {
+    min-width: calc(100% - 580px);
+    flex: 1;
+}
+.questionnaire-form p.quantity {
+    width: 168px;
+}
+.questionnaire-form p.endDate {
+    width: 265px;
+}
+
+.questionnaire-form p label {
+    font-weight: bold;
+    color: #707070;
+}
+
+.questionnaire-form .checkbox-item {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    gap: 8px;
+}
+
+.questionnaire-form .appliers-section {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.questionnaire-form fieldset {
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+}
+.questionnaire-form fieldset legend {
+    font-weight: bold;
+    color: #909090;
+}
+
+.questionnaire-form .questions-section > section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 24px;
+}
+
+.questionnaire-form .questions-section > section .title {
+    width: 100%;
+}
+
+.questionnaire-form .questions-section > section .type, .questionnaire-form .questions-section > section .variable {
+    width: 265px;
+}
+
+.questionnaire-form .questions-section > section section {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 24px;
+}
+.questionnaire-form .questions-section > section section > label {
+    width: 100%;
+    font-weight: bold;
+    color: #909090;
+}
+.questionnaire-form .questions-section > section section p {
+    min-width: 35%;
+    flex: 1;
+}
+
+.questionnaire-form .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.questionnaire-form .buttons .remove {
+    display: inline-block;
+    background-color: #F77;
+    align-self: center;
+    justify-self: center;
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
