@@ -1,18 +1,48 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CreateQuestionnaire } from "./pages/CreateQuestionnaire";
+import { FormQuestionnaire } from "./pages/FormQuestionnaire";
 import { ListQuestionnaires } from "./pages/ListQuestionnaires";
 import Login from "./pages/Login";
+import { isLoggedIn } from "./util/login";
+import { routes_constraints } from "./util/route_utils";
 
 export const Router = () => {
+  const goIfLoggedIn = (ChildComponent: JSX.Element) => (
+    <>
+      {!isLoggedIn() ? (
+        <Navigate to={routes_constraints.LOGIN} />
+      ) : (
+        ChildComponent
+      )}
+    </>
+  );
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route index element={<Login />} />
-          <Route path="questionnaires" element={<ListQuestionnaires />} />
           <Route
-            path="questionnaires/create"
-            element={<CreateQuestionnaire />}
+            index
+            element={
+              <>
+                {isLoggedIn() ? (
+                  <Navigate to={routes_constraints.QUESTIONNAIRE_LIST} />
+                ) : (
+                  <Login />
+                )}
+              </>
+            }
+          />
+          <Route
+            path={routes_constraints.QUESTIONNAIRE_LIST}
+            element={goIfLoggedIn(<ListQuestionnaires />)}
+          />
+          <Route
+            path={routes_constraints.QUESTIONNAIRE_CREATE}
+            element={goIfLoggedIn(<CreateQuestionnaire />)}
+          />
+          <Route
+            path={routes_constraints.QUESTIONNAIRE_GET}
+            element={goIfLoggedIn(<FormQuestionnaire />)}
           />
         </Route>
       </Routes>
