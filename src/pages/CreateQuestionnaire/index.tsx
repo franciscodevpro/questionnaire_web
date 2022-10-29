@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { FiXCircle } from "@react-icons/all-files/fi/FiXCircle";
 import { Main } from "../../components/Main";
 import "./styles.css";
 
@@ -51,7 +51,11 @@ export const CreateQuestionnaire = ({}: CreateQuestionnaireProps) => {
             </p>
             <p className="type">
               <label htmlFor="type">Tipo:</label>
-              <input type="text" name="type" />
+              <select name="type">
+                <option value={1}>Escolha única</option>
+                <option value={2}>Multipla escolha</option>
+                <option value={3}>Subjetiva</option>
+              </select>
             </p>
             <p className="variable">
               <label htmlFor="variable">Nome da variável:</label>
@@ -61,9 +65,15 @@ export const CreateQuestionnaire = ({}: CreateQuestionnaireProps) => {
               <label>Opções de resposta:</label>
               <p className="answerOptions">
                 <input type="text" name="answerOptions" value="Masculino" />
+                <button type="button">
+                  <FiXCircle size={20} />
+                </button>
               </p>
               <p className="answerOptions">
                 <input type="text" name="answerOptions" value="Feminino" />
+                <button type="button">
+                  <FiXCircle size={20} />
+                </button>
               </p>
               <p className="answerOptions">
                 <input
@@ -71,6 +81,9 @@ export const CreateQuestionnaire = ({}: CreateQuestionnaireProps) => {
                   name="answerOptions"
                   value="Não identificado"
                 />
+                <button type="button">
+                  <FiXCircle size={20} />
+                </button>
               </p>
               <p className="answerOptions">
                 <input type="text" name="answerOptions" />
