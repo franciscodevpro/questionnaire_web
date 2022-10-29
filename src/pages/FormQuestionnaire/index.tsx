@@ -1,4 +1,3 @@
-import { FiXCircle } from "@react-icons/all-files/fi/FiXCircle";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { findAllAppliers } from "../../api/appliers";
@@ -24,15 +23,50 @@ export const FormQuestionnaire = ({
   >(null);
   const [appliers, setAppliers] = useState<ApplierResponseType[] | null>(null);
 
+  const newQuestionnaire = async () => {
+    const appliers = await findAllAppliers();
+    setAppliers(appliers);
+    setData({
+      id: "",
+      name: "",
+      image: "",
+      quantity: "",
+      endDate: "",
+      link: "",
+      exceedsQuantity: false,
+      canBeOnline: "",
+      devices: [],
+      appliers: [],
+      questions: [],
+    });
+  };
+
   const getDada = async (id: string) => {
     if (type === "create") return;
     const questionnaire = await getSpecificQuestionnaire(id);
-    const appliers = await findAllAppliers();
     setData(questionnaire);
-    setAppliers(appliers);
+  };
+  const addQuestion = () => {
+    const newData = { ...data };
+    newData.questions?.push({
+      id: `new:${crypto.randomUUID()}`,
+      idQuestionnaire: "",
+      title: "",
+      variable: "",
+      type: "",
+      minAnswers: 0,
+      maxAnswers: 0,
+      defaultValue: "",
+      shuffle: false,
+      prioritizeBySelection: false,
+      isActive: false,
+      answerOptions: [],
+    });
+    setData(newData as any);
   };
   useEffect(() => {
     if (id) getDada(id);
+    else newQuestionnaire();
   }, []);
   return (
     <Main title="Questionário - salvar">
@@ -91,54 +125,13 @@ export const FormQuestionnaire = ({
         <fieldset className="questions-section">
           <legend>Perguntas</legend>
           {data?.questions?.map?.((question) => (
-            <section key={question.id}>
-              <p className="title">
-                <label htmlFor="title">Pergunta:</label>
-                <input type="text" name="title" defaultValue={question.title} />
-              </p>
-              <p className="type">
-                <label htmlFor="type">Tipo:</label>
-                <select name="type" defaultValue={question.type}>
-                  <option defaultValue={1}>Escolha única</option>
-                  <option defaultValue={2}>Multipla escolha</option>
-                  <option defaultValue={3}>Subjetiva</option>
-                </select>
-              </p>
-              <p className="variable">
-                <label htmlFor="variable">Nome da variável:</label>
-                <input
-                  type="text"
-                  name="variable"
-                  defaultValue={question.variable}
-                />
-              </p>
-              <section>
-                <label>Opções de resposta:</label>
-                {question.answerOptions.map?.((answerOption) => (
-                  <p className="answerOptions" key={answerOption.id}>
-                    <input
-                      type="text"
-                      name="answerOptions"
-                      defaultValue={answerOption.title}
-                    />
-                    <button type="button">
-                      <FiXCircle size={20} />
-                    </button>
-                  </p>
-                ))}
-                <p className="answerOptions">
-                  <input type="text" name="answerOptions" />
-                </p>
-              </section>
-              <div className="buttons">
-                <button className="remove">Remover</button>
-              </div>
-            </section>
+            <Question {...question} key={question.id} />
           ))}
-          <Question />
         </fieldset>
       </form>
-      <button className="add">+</button>
+      <button className="add" onClick={() => addQuestion()}>
+        +
+      </button>
     </Main>
   );
 };
