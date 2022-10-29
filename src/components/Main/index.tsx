@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { BiDevices } from "@react-icons/all-files/bi/BiDevices";
 import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
 import { FiUser } from "@react-icons/all-files/fi/FiUser";
-import { BiDevices } from "@react-icons/all-files/bi/BiDevices";
-import "./styles.css";
-import { MenuItem } from "../MenuItem";
 import { PropsWithChildren, useState } from "react";
+import { Link } from "react-router-dom";
+import { doLogout } from "../../api/signin/login";
+import { routes_constraints } from "../../util/route_utils";
+import { MenuItem } from "../MenuItem";
+import "./styles.css";
 
 type MainProps = PropsWithChildren & { title: string };
 
@@ -15,7 +17,7 @@ export const Main = ({ children, title }: MainProps) => {
       <nav>
         <Link to={""}>
           <header>
-            <img alt="Logo" src="images/logo.png" />
+            <img alt="Logo" src="/images/logo.png" />
           </header>
         </Link>
         <ul>
@@ -30,6 +32,7 @@ export const Main = ({ children, title }: MainProps) => {
               ]}
               activeItem={active}
               onItemClick={(id) => setActive(id)}
+              titleLink={routes_constraints.QUESTIONNAIRE_LIST}
             />
           </li>
           <li>
@@ -59,13 +62,18 @@ export const Main = ({ children, title }: MainProps) => {
             />
           </li>
         </ul>
-        <footer>
-          <span className="profile-icon"></span>
-          <aside>
-            <header>Francisco</header>
-            <p>francisco.dev@dev.com</p>
-          </aside>
-        </footer>
+        <details>
+          <section>
+            <button onClick={() => doLogout()}>Sair</button>
+          </section>
+          <summary className="footer">
+            <span className="profile-icon"></span>
+            <aside>
+              <header>Francisco</header>
+              <p>francisco.dev@dev.com</p>
+            </aside>
+          </summary>
+        </details>
       </nav>
       <header>
         <p>{title}</p>

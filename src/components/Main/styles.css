@@ -58,7 +58,7 @@
     width: calc(100% - 260px);
 }
 
-.main > nav > footer {
+.main > nav .footer {
     padding: 8px;
     display: flex;
     gap: 8px;
@@ -67,7 +67,7 @@
     background-color: #EEF2FF;
 }
 
-.main > nav > footer .profile-icon {
+.main > nav .footer .profile-icon {
     display: inline-block;
     height: 40px;
     width: 40px;
@@ -75,10 +75,10 @@
     border-radius: 100%;
 }
 
-.main > nav > footer header {
+.main > nav .footer header {
     font-weight: 600;
 }
-.main > nav > footer p {
+.main > nav .footer p {
     font-size: .87rem;
 }
 
@@ -98,4 +98,24 @@
     justify-content: center;
     align-items: center;
     padding: 32px 24px;
+}
+
+.main > nav details {
+    position: relative;
+}
+
+.main > nav details summary {
+    cursor: pointer;
+}
+
+.main > nav details section {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    padding: 4px;
+}
+.main > nav details section > button {
+    width: 100%;
+    font-weight: bold;
 }
