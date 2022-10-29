@@ -9,6 +9,7 @@ type MenuItemProps = {
   items: { value: string; id: string }[];
   activeItem?: string;
   onItemClick?: (id: string) => void;
+  titleLink?: string;
 };
 
 export const MenuItem = ({
@@ -17,11 +18,12 @@ export const MenuItem = ({
   items,
   activeItem,
   onItemClick,
+  titleLink,
 }: MenuItemProps) => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Link to={""}>
+      <Link to={titleLink || ""}>
         <header
           onClick={() => setOpen(!open)}
           style={!open ? { opacity: 0.5 } : {}}
