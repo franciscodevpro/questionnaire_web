@@ -1,0 +1,46 @@
+section.question-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 24px;
+}
+
+section.question-section .title {
+    width: 100%;
+}
+
+section.question-section .type, section.question-section .variable {
+    width: 265px;
+}
+
+section.question-section section {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 24px;
+}
+section.question-section section > label {
+    width: 100%;
+    font-weight: bold;
+    color: #909090;
+}
+section.question-section section p {
+    position: relative;
+    min-width: 35%;
+    flex: 1;
+}
+
+section.question-section section p button {
+    position: absolute;
+    display: inline-flex;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
