@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { CreateQuestionnaire } from "./pages/CreateQuestionnaire";
 import { FormQuestionnaire } from "./pages/FormQuestionnaire";
 import { ListQuestionnaires } from "./pages/ListQuestionnaires";
 import Login from "./pages/Login";
@@ -38,11 +37,11 @@ export const Router = () => {
           />
           <Route
             path={routes_constraints.QUESTIONNAIRE_CREATE}
-            element={goIfLoggedIn(<CreateQuestionnaire />)}
+            element={goIfLoggedIn(<FormQuestionnaire />)}
           />
           <Route
             path={routes_constraints.QUESTIONNAIRE_GET}
-            element={goIfLoggedIn(<FormQuestionnaire />)}
+            element={goIfLoggedIn(<FormQuestionnaire type="update" />)}
           />
         </Route>
       </Routes>
