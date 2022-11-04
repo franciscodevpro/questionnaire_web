@@ -41,6 +41,25 @@ export const FormQuestionnaire = ({
     });
   };
 
+  const changeDataValue = (
+    key: keyof QuestionnaireResponseType,
+    value: any
+  ) => {
+    if (!!data) setData({ ...data, [key]: value });
+  };
+
+  const changeAppliers = (
+    { id, name }: { id: string; name: string },
+    present: boolean
+  ) => {
+    const appliers: { id: string; name: string }[] | undefined = present
+      ? data?.appliers.find((el) => el.id === id)
+        ? data?.appliers
+        : [...(data?.appliers || []), { id, name }]
+      : data?.appliers.filter((elm) => elm.id !== id);
+    if (!!data) setData({ ...data, appliers: appliers || data.appliers });
+  };
+
   const getDada = async (id: string) => {
     if (type === "create") return;
     const questionnaire = await getSpecificQuestionnaire(id);
@@ -64,6 +83,14 @@ export const FormQuestionnaire = ({
     });
     setData(newData as any);
   };
+  const removeQuestion = (id: string) => {
+    console.log("Removendo questão: " + id);
+    const newData = { ...data };
+    newData.questions = data?.questions?.filter(
+      (question) => question.id !== id
+    );
+    setData(newData as any);
+  };
   useEffect(() => {
     if (id) getDada(id);
     else newQuestionnaire();
@@ -71,20 +98,40 @@ export const FormQuestionnaire = ({
   return (
     <Main title="Questionário - salvar">
       <div className="main-button">
-        <button className="save-questionnaire">Salvar questionário</button>
+        <button
+          className="save-questionnaire"
+          onClick={() => console.log(JSON.stringify(data, null, 1))}
+        >
+          Salvar questionário
+        </button>
       </div>
       <form className="questionnaire-form">
         <p className="name">
           <label htmlFor="name">Nome:</label>
-          <input type="text" name="name" defaultValue={data?.name} />
+          <input
+            type="text"
+            name="name"
+            defaultValue={data?.name}
+            onChange={(evt) => changeDataValue("name", evt.target.value)}
+          />
         </p>
         <p className="quantity">
           <label htmlFor="quantity">Quantidade limite:</label>
-          <input type="number" name="quantity" defaultValue={data?.quantity} />
+          <input
+            type="number"
+            name="quantity"
+            defaultValue={data?.quantity}
+            onChange={(evt) => changeDataValue("quantity", evt.target.value)}
+          />
         </p>
         <p className="endDate">
           <label htmlFor="endDate">Data de término:</label>
-          <input type="text" name="endDate" defaultValue={data?.endDate} />
+          <input
+            type="text"
+            name="endDate"
+            defaultValue={data?.endDate}
+            onChange={(evt) => changeDataValue("endDate", evt.target.value)}
+          />
         </p>
         <p className="exceedsQuantity checkbox-item">
           <label htmlFor="exceedsQuantity">Exeder limite</label>
@@ -93,6 +140,9 @@ export const FormQuestionnaire = ({
             name="exceedsQuantity"
             value="true"
             defaultChecked={data?.exceedsQuantity}
+            onChange={(evt) =>
+              changeDataValue("exceedsQuantity", evt.target.checked)
+            }
           />
         </p>
         <p className="canBeOnline checkbox-item">
@@ -102,6 +152,9 @@ export const FormQuestionnaire = ({
             name="canBeOnline"
             value="true"
             defaultChecked={!!data?.canBeOnline}
+            onChange={(evt) =>
+              changeDataValue("canBeOnline", evt.target.checked)
+            }
           />
         </p>
         <fieldset className="appliers-section">
@@ -117,6 +170,12 @@ export const FormQuestionnaire = ({
                   defaultChecked={
                     !!data?.appliers.find((appl) => appl.id === applier.id)
                   }
+                  onChange={(evt) =>
+                    changeAppliers(
+                      { id: applier.id, name: applier.name },
+                      evt.target.checked
+                    )
+                  }
                 />
               </p>
             ))}
@@ -125,7 +184,11 @@ export const FormQuestionnaire = ({
         <fieldset className="questions-section">
           <legend>Perguntas</legend>
           {data?.questions?.map?.((question) => (
-            <Question {...question} key={question.id} />
+            <Question
+              {...question}
+              key={question.id}
+              onClickInRemove={() => removeQuestion(question.id)}
+            />
           ))}
         </fieldset>
       </form>

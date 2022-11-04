@@ -5,6 +5,7 @@ import "./styles.css";
 
 type QuestionProps = Partial<QuestionResponseType> & {
   onChangeValue?: (value: Partial<QuestionResponseType>) => void;
+  onClickInRemove?: () => void;
 };
 
 export const Question = ({
@@ -21,6 +22,7 @@ export const Question = ({
   isActive,
   answerOptions = [],
   onChangeValue,
+  onClickInRemove,
 }: QuestionProps) => {
   const [questinData, setQuestionData] = useState<
     Partial<QuestionResponseType>
@@ -63,6 +65,7 @@ export const Question = ({
       changeOneOfValues(key, evt.target.value);
       onChangeValue?.(questinData);
     };
+
   const createNewAnswerOption = (evt: any) => {
     const value = evt?.target?.value;
     if (!value) return;
@@ -149,7 +152,9 @@ export const Question = ({
         </section>
       )}
       <div className="buttons">
-        <button className="remove">Remover</button>
+        <button className="remove" type="button" onClick={onClickInRemove}>
+          Remover
+        </button>
       </div>
     </section>
   );
