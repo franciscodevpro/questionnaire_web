@@ -73,7 +73,6 @@ export const Question = ({
     newQuestionData.answerOptions?.push({
       id: `new:${crypto.randomUUID()}`,
       idQuestion: questinData?.id as string,
-      isActive: true,
       status: true,
       title: value,
     });

@@ -1,3 +1,5 @@
+import { AnswerOptionResponseType } from "./answerOption";
+
 export type QuestionRequestType = {
   title: string;
   variable: string;
@@ -34,11 +36,5 @@ export type QuestionResponseType = {
   shuffle: boolean;
   prioritizeBySelection: boolean;
   isActive: boolean;
-  answerOptions: {
-    id: string;
-    idQuestion: string;
-    title: string;
-    status: boolean;
-    isActive: boolean;
-  }[];
+  answerOptions: AnswerOptionResponseType[];
 };
