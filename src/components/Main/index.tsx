@@ -32,7 +32,7 @@ export const Main = ({ children, title }: MainProps) => {
               ]}
               activeItem={active}
               onItemClick={(id) => setActive(id)}
-              titleLink={routes_constraints.QUESTIONNAIRE_LIST}
+              titleLink={routes_constraints.QUESTIONNAIRE}
             />
           </li>
           <li>

@@ -24,7 +24,7 @@ export const Router = () => {
             element={
               <>
                 {isLoggedIn() ? (
-                  <Navigate to={routes_constraints.QUESTIONNAIRE_LIST} />
+                  <Navigate to={routes_constraints.QUESTIONNAIRE} />
                 ) : (
                   <Login />
                 )}
@@ -32,7 +32,7 @@ export const Router = () => {
             }
           />
           <Route
-            path={routes_constraints.QUESTIONNAIRE_LIST}
+            path={routes_constraints.QUESTIONNAIRE}
             element={goIfLoggedIn(<ListQuestionnaires />)}
           />
           <Route
@@ -40,7 +40,7 @@ export const Router = () => {
             element={goIfLoggedIn(<FormQuestionnaire />)}
           />
           <Route
-            path={routes_constraints.QUESTIONNAIRE_GET}
+            path={routes_constraints.QUESTIONNAIRE_ID}
             element={goIfLoggedIn(<FormQuestionnaire type="update" />)}
           />
         </Route>

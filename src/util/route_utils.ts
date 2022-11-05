@@ -1,15 +1,17 @@
 export const routes_constraints = {
   LOGIN: "/",
-  QUESTIONNAIRE_LIST: "/questionnaires",
+  QUESTIONNAIRE: "/questionnaires",
   QUESTIONNAIRE_CREATE: "/questionnaires/create",
-  QUESTIONNAIRE_GET: "/questionnaires/:id",
-  QUESTION_LIST: "/questions",
-  APPLIER_LIST: "/appliers",
+  QUESTIONNAIRE_ID: "/questionnaires/:id",
+  QUESTION: "/questions",
+  APPLIER: "/appliers",
+  ANSWER_OPTION: "/answer_options",
+  ANSWER_OPTION_ID: "/answer_options/:id",
 };
 
 export const routes_helpers = {
   mountQuestionnaireGet: (id: string) =>
-    routes_constraints.QUESTIONNAIRE_GET.replace(":id", id),
+    routes_constraints.QUESTIONNAIRE_ID.replace(":id", id),
   mountQuestionGet: (idQuestionnaire: string) =>
-    `${routes_constraints.QUESTION_LIST}?idQuestionnaire=${idQuestionnaire}`,
+    `${routes_constraints.QUESTION}?idQuestionnaire=${idQuestionnaire}`,
 };

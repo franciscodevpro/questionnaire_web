@@ -21,7 +21,7 @@ export const saveQuestionnaire = async (
   questionnaire: QuestionnaireRequestType
 ): Promise<QuestionnaireRequestResultType> => {
   const result = await api.post(
-    routes_constraints.QUESTIONNAIRE_LIST,
+    routes_constraints.QUESTIONNAIRE,
     questionnaire,
     authConfig()
   );
@@ -31,10 +31,7 @@ export const saveQuestionnaire = async (
 export const findAllQuestionnaire = async (): Promise<
   QuestionnaireResponseType[]
 > => {
-  const result = await api.get(
-    routes_constraints.QUESTIONNAIRE_LIST,
-    authConfig()
-  );
+  const result = await api.get(routes_constraints.QUESTIONNAIRE, authConfig());
   return result.data;
 };
 
