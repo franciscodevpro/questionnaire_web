@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { findAllQuestionnaire } from "../../api/questionnaire";
+import {
+  deleteQuestionnaire,
+  findAllQuestionnaire,
+} from "../../api/questionnaire";
 import { Main } from "../../components/Main";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
+import { confirmationPopup } from "../../util/messages";
 import { routes_constraints, routes_helpers } from "../../util/route_utils";
 import "./styles.css";
 
@@ -16,27 +20,50 @@ export const ListQuestionnaires = ({}: ListQuestionnairesProps) => {
     const questionnaireResult = await findAllQuestionnaire();
     setQuestionnaires(questionnaireResult);
   };
+  const handleDeleteQuestionnaire = async (id: string) => {
+    const result = confirmationPopup(
+      'Tem certeza que deseja excluir o questionário: "' +
+        questionnaires.find((q) => q.id === id)?.name +
+        '" ?'
+    );
+    if (!result) return;
+    await deleteQuestionnaire(id);
+    await startComponent();
+  };
   const navigate = useNavigate();
   useEffect(() => {
     startComponent();
   }, []);
+
   return (
     <Main title="Questionários">
       <h1 className="questionarios-title">Todos ativos</h1>
       <ul className="questionarios-list">
         {questionnaires.map((questionnaire) => (
           <li key={questionnaire.id}>
-            <Link to={routes_helpers.mountQuestionnaireGet(questionnaire.id)}>
+            <Link to={routes_helpers.mountQuestionnaireId(questionnaire.id)}>
               <p>{questionnaire.name}</p>
             </Link>
             <section className="buttons-section">
               <button type="button" className="clone">
                 Duplicar
               </button>
-              <button type="button" className="update">
+              <button
+                type="button"
+                className="update"
+                onClick={() =>
+                  navigate(
+                    routes_helpers.mountQuestionnaireId(questionnaire.id)
+                  )
+                }
+              >
                 Atualizar
               </button>
-              <button type="button" className="remove">
+              <button
+                type="button"
+                className="remove"
+                onClick={() => handleDeleteQuestionnaire(questionnaire.id)}
+              >
                 Excluir
               </button>
             </section>

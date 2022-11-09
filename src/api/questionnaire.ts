@@ -62,12 +62,16 @@ export const getSpecificQuestionnaire = async (
   QuestionnaireResponseType & Record<"questions", QuestionResponseType[]>
 > => {
   const result = await api.get(
-    routes_helpers.mountQuestionnaireGet(id),
+    routes_helpers.mountQuestionnaireId(id),
     authConfig()
   );
   const questions = await api.get(
-    routes_helpers.mountQuestionGet(id),
+    routes_helpers.mountQuestionIdQuestionnaire(id),
     authConfig()
   );
   return { ...result.data, questions: questions.data };
+};
+
+export const deleteQuestionnaire = async (id: string): Promise<void> => {
+  await api.delete(routes_helpers.mountQuestionnaireId(id), authConfig());
 };
