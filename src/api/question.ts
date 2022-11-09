@@ -19,9 +19,29 @@ const authConfig = () => ({
 export const saveQuestion = async (
   question: QuestionRequestType
 ): Promise<QuestionRequestResultType> => {
+  const {
+    idQuestionnaire,
+    title,
+    variable,
+    type,
+    minAnswers,
+    maxAnswers,
+    defaultValue,
+    shuffle,
+    prioritizeBySelection,
+  } = question;
   const result = await api.post(
-    routes_constraints.QUESTION,
-    question,
+    routes_constraints.QUESTION + "?idQuestionnaire=" + idQuestionnaire,
+    {
+      title,
+      variable,
+      type,
+      minAnswers,
+      maxAnswers,
+      defaultValue,
+      shuffle,
+      prioritizeBySelection,
+    },
     authConfig()
   );
   return result.data;

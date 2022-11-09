@@ -4,29 +4,27 @@ import { QuestionResponseType } from "../../types/question";
 import "./styles.css";
 
 type QuestionProps = Partial<QuestionResponseType> & {
-  onChangeValue?: (value: Partial<QuestionResponseType>) => void;
+  onChangeValue?: (value: QuestionResponseType) => void;
   onClickInRemove?: () => void;
 };
 
 export const Question = ({
-  id,
-  idQuestionnaire,
+  id = "",
+  idQuestionnaire = "",
   title = "",
   variable = "",
   type = "",
-  minAnswers,
-  maxAnswers,
-  defaultValue,
-  shuffle,
-  prioritizeBySelection,
-  isActive,
+  minAnswers = 0,
+  maxAnswers = 0,
+  defaultValue = "",
+  shuffle = false,
+  prioritizeBySelection = false,
+  isActive = true,
   answerOptions = [],
   onChangeValue,
   onClickInRemove,
 }: QuestionProps) => {
-  const [questinData, setQuestionData] = useState<
-    Partial<QuestionResponseType>
-  >({
+  const [questinData, setQuestionData] = useState<QuestionResponseType>({
     id,
     idQuestionnaire,
     title,

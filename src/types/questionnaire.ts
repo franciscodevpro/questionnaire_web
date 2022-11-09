@@ -1,7 +1,7 @@
 export type QuestionnaireRequestType = {
   name: string;
   image: string;
-  quantity: string;
+  quantity: number;
   endDate: string;
   link: string;
   exceedsQuantity: boolean;
@@ -14,22 +14,22 @@ export type QuestionnaireRequestResultType = {
   id: string;
   name: string;
   image: string;
-  quantity: string;
+  quantity: number;
   endDate: string;
   link: string;
   exceedsQuantity: boolean;
-  canBeOnline: string;
+  canBeOnline: boolean;
 };
 
 export type QuestionnaireResponseType = {
   id: string;
   name: string;
   image: string;
-  quantity: string;
+  quantity: number;
   endDate: string;
   link: string;
   exceedsQuantity: boolean;
-  canBeOnline: string;
+  canBeOnline: boolean;
   devices: {
     id: string;
     name: string;

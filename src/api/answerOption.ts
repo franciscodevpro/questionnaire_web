@@ -19,9 +19,10 @@ const authConfig = () => ({
 export const saveAnswerOption = async (
   answerOption: AnswerOptionRequestType
 ): Promise<AnswerOptionRequestResultType> => {
+  const { idQuestion, title, status } = answerOption;
   const result = await api.post(
-    routes_constraints.ANSWER_OPTION,
-    answerOption,
+    routes_constraints.ANSWER_OPTION + "?idQuestion=" + idQuestion,
+    { title, status },
     authConfig()
   );
   return result.data;

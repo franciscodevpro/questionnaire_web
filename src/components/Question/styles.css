@@ -5,6 +5,7 @@ section.question-section {
     border: 2px solid #ccc;
     border-radius: 5px;
     padding: 24px;
+    margin-bottom: 16px;
 }
 
 section.question-section .title {

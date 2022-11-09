@@ -20,9 +20,30 @@ const authConfig = () => ({
 export const saveQuestionnaire = async (
   questionnaire: QuestionnaireRequestType
 ): Promise<QuestionnaireRequestResultType> => {
+  const {
+    name = "",
+    image = "",
+    quantity = 0,
+    endDate = "",
+    link = "",
+    exceedsQuantity = false,
+    canBeOnline = false,
+    deviceIds = [],
+    applierIds = [],
+  } = questionnaire;
   const result = await api.post(
     routes_constraints.QUESTIONNAIRE,
-    questionnaire,
+    {
+      name,
+      image,
+      quantity: typeof quantity === "number" ? quantity : parseInt(quantity),
+      endDate,
+      link,
+      exceedsQuantity,
+      canBeOnline,
+      deviceIds,
+      applierIds,
+    },
     authConfig()
   );
   return result.data;

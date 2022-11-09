@@ -1,6 +1,7 @@
 import { AnswerOptionResponseType } from "./answerOption";
 
 export type QuestionRequestType = {
+  idQuestionnaire: string;
   title: string;
   variable: string;
   type: string;

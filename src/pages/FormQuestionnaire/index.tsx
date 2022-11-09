@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { saveAnswerOption } from "../../api/answerOption";
 import { findAllAppliers } from "../../api/appliers";
-import { getSpecificQuestionnaire } from "../../api/questionnaire";
+import { saveQuestion } from "../../api/question";
+import {
+  getSpecificQuestionnaire,
+  saveQuestionnaire,
+} from "../../api/questionnaire";
 import { Main } from "../../components/Main";
 import { Question } from "../../components/Question";
+import { AnswerOptionRequestType } from "../../types/answerOption";
 import { ApplierResponseType } from "../../types/applier";
 import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
@@ -21,7 +27,132 @@ export const FormQuestionnaire = ({
     | (QuestionnaireResponseType & Record<"questions", QuestionResponseType[]>)
     | null
   >(null);
+  const [deletedQuestions, setDeletedQuestions] = useState<string[]>([]);
   const [appliers, setAppliers] = useState<ApplierResponseType[] | null>(null);
+
+  const createAnswerOptions = (answerOptions: AnswerOptionRequestType[]) =>
+    new Promise(async () => {
+      console.log("Adicionando opções...");
+      await Promise.all(
+        answerOptions.map(async (answerOption) => {
+          console.log("Adicionando opção: " + answerOption?.title);
+          const { idQuestion, title, status } = answerOption;
+          await saveAnswerOption({
+            idQuestion,
+            title,
+            status,
+          });
+        })
+      );
+      console.log("Opções adicionadas");
+      return;
+    });
+
+  const createQuestions = async (questions: QuestionResponseType[]) =>
+    new Promise(async () => {
+      console.log("Salvando perguntas");
+      await Promise.all(
+        questions.map(async (question) => {
+          const {
+            idQuestionnaire,
+            title,
+            variable,
+            type,
+            minAnswers,
+            maxAnswers,
+            defaultValue,
+            shuffle,
+            prioritizeBySelection,
+            answerOptions,
+          } = question;
+          console.log("Salvando pergunta: " + title);
+          const questionResponse = await saveQuestion({
+            idQuestionnaire,
+            title,
+            variable,
+            type,
+            minAnswers,
+            maxAnswers,
+            defaultValue,
+            shuffle,
+            prioritizeBySelection,
+          });
+          await createAnswerOptions(
+            answerOptions.map((el) => ({
+              ...el,
+              idQuestion: questionResponse.id,
+            }))
+          );
+          console.log("Opções já salvas!!!!");
+          return;
+        })
+      );
+      console.log("Perguntas salvas com sucesso!");
+    });
+
+  const createQuestionnaire = async () => {
+    if (!data) return;
+    console.log("Salvando questionário...");
+    const {
+      name,
+      image,
+      quantity,
+      endDate,
+      link,
+      exceedsQuantity,
+      canBeOnline,
+      devices,
+      appliers,
+      questions,
+    } = data;
+    console.log(
+      JSON.stringify(
+        {
+          name,
+          image,
+          quantity,
+          endDate,
+          link,
+          exceedsQuantity,
+          canBeOnline,
+          devices,
+          appliers,
+          questions,
+        },
+        null,
+        2
+      )
+    );
+    const questionnaire = await saveQuestionnaire({
+      name,
+      image,
+      quantity,
+      endDate,
+      link,
+      exceedsQuantity,
+      canBeOnline,
+      deviceIds: devices.map((el) => el.id),
+      applierIds: appliers.map((el) => el.id),
+    });
+    await createQuestions(
+      questions.map((el) => ({ ...el, idQuestionnaire: questionnaire.id }))
+    );
+    console.log("Questionário salvo com sucesso");
+  };
+
+  const updateQuestionnaire = async () => {
+    return Promise.resolve(console.log("atualizando questionário..."));
+  };
+
+  const handleSaveQuestionnaire = async () => {
+    if (!data?.id) {
+      console.log("Calling createQuestionnaire method...");
+      await createQuestionnaire();
+      console.log("CreateQuestionnaire method called!!!");
+      return;
+    }
+    return await updateQuestionnaire();
+  };
 
   const newQuestionnaire = async () => {
     const appliers = await findAllAppliers();
@@ -30,11 +161,11 @@ export const FormQuestionnaire = ({
       id: "",
       name: "",
       image: "",
-      quantity: "",
+      quantity: 0,
       endDate: "",
       link: "",
       exceedsQuantity: false,
-      canBeOnline: "",
+      canBeOnline: false,
       devices: [],
       appliers: [],
       questions: [],
@@ -62,8 +193,12 @@ export const FormQuestionnaire = ({
 
   const getDada = async (id: string) => {
     if (type === "create") return;
+    const appliers = await findAllAppliers();
+    setAppliers(appliers);
     const questionnaire = await getSpecificQuestionnaire(id);
     setData(questionnaire);
+    console.log(questionnaire);
+    console.log(appliers);
   };
   const addQuestion = () => {
     const newData = { ...data };
@@ -89,6 +224,7 @@ export const FormQuestionnaire = ({
     newData.questions = data?.questions?.filter(
       (question) => question.id !== id
     );
+    setDeletedQuestions([...deletedQuestions, id]);
     setData(newData as any);
   };
   useEffect(() => {
@@ -100,7 +236,7 @@ export const FormQuestionnaire = ({
       <div className="main-button">
         <button
           className="save-questionnaire"
-          onClick={() => console.log(JSON.stringify(data, null, 1))}
+          onClick={handleSaveQuestionnaire}
         >
           Salvar questionário
         </button>
@@ -167,7 +303,7 @@ export const FormQuestionnaire = ({
                   type="checkbox"
                   name="appliers"
                   value={applier.id}
-                  defaultChecked={
+                  checked={
                     !!data?.appliers.find((appl) => appl.id === applier.id)
                   }
                   onChange={(evt) =>
@@ -188,6 +324,16 @@ export const FormQuestionnaire = ({
               {...question}
               key={question.id}
               onClickInRemove={() => removeQuestion(question.id)}
+              onChangeValue={(question) => {
+                setData({
+                  ...data,
+                  questions: data.questions.map((quest) => {
+                    if (quest.id === question.id) return question;
+                    return quest;
+                  }),
+                });
+                console.log(data);
+              }}
             />
           ))}
         </fieldset>
