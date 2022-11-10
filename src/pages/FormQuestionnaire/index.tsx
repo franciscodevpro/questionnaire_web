@@ -92,7 +92,6 @@ export const FormQuestionnaire = ({
 
   const createQuestionnaire = async () => {
     if (!data) return;
-    console.log("Salvando questionário...");
     const {
       name,
       image,
@@ -105,24 +104,6 @@ export const FormQuestionnaire = ({
       appliers,
       questions,
     } = data;
-    console.log(
-      JSON.stringify(
-        {
-          name,
-          image,
-          quantity,
-          endDate,
-          link,
-          exceedsQuantity,
-          canBeOnline,
-          devices,
-          appliers,
-          questions,
-        },
-        null,
-        2
-      )
-    );
     const questionnaire = await saveQuestionnaire({
       name,
       image,
@@ -137,7 +118,6 @@ export const FormQuestionnaire = ({
     await createQuestions(
       questions.map((el) => ({ ...el, idQuestionnaire: questionnaire.id }))
     );
-    console.log("Questionário salvo com sucesso");
   };
 
   const updateQuestionnaire = async () => {
