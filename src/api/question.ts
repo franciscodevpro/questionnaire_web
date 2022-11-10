@@ -3,7 +3,7 @@ import {
   QuestionRequestResultType,
   QuestionRequestType,
 } from "../types/question";
-import { routes_constraints } from "../util/route_utils";
+import { routes_helpers } from "../util/route_utils";
 import api from "./index";
 
 const getAccessToken = (): string | null => {
@@ -15,6 +15,37 @@ const getAccessToken = (): string | null => {
 const authConfig = () => ({
   headers: { "x-access-token": `Bearer ${getAccessToken()}` },
 });
+
+export const updateQuestion = async (
+  id: string,
+  question: QuestionRequestType
+): Promise<QuestionRequestResultType> => {
+  const {
+    title,
+    variable,
+    type,
+    minAnswers,
+    maxAnswers,
+    defaultValue,
+    shuffle,
+    prioritizeBySelection,
+  } = question;
+  const result = await api.post(
+    routes_helpers.mountQuestionId(id),
+    {
+      title,
+      variable,
+      type,
+      minAnswers,
+      maxAnswers,
+      defaultValue,
+      shuffle,
+      prioritizeBySelection,
+    },
+    authConfig()
+  );
+  return result.data;
+};
 
 export const saveQuestion = async (
   question: QuestionRequestType
@@ -31,7 +62,7 @@ export const saveQuestion = async (
     prioritizeBySelection,
   } = question;
   const result = await api.post(
-    routes_constraints.QUESTION + "?idQuestionnaire=" + idQuestionnaire,
+    routes_helpers.mountQuestionIdQuestionnaire(idQuestionnaire),
     {
       title,
       variable,
