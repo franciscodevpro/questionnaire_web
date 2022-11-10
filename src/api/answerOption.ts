@@ -3,7 +3,7 @@ import {
   AnswerOptionRequestResultType,
   AnswerOptionRequestType,
 } from "../types/answerOption";
-import { routes_constraints } from "../util/route_utils";
+import { routes_constraints, routes_helpers } from "../util/route_utils";
 import api from "./index";
 
 const getAccessToken = (): string | null => {
@@ -22,6 +22,19 @@ export const saveAnswerOption = async (
   const { idQuestion, title, status } = answerOption;
   const result = await api.post(
     routes_constraints.ANSWER_OPTION + "?idQuestion=" + idQuestion,
+    { title, status },
+    authConfig()
+  );
+  return result.data;
+};
+
+export const updateAnswerOption = async (
+  id: string,
+  answerOption: AnswerOptionRequestType
+): Promise<AnswerOptionRequestResultType> => {
+  const { title, status } = answerOption;
+  const result = await api.post(
+    routes_helpers.mountAnswerOptionId(id),
     { title, status },
     authConfig()
   );
