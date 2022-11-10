@@ -77,3 +77,7 @@ export const saveQuestion = async (
   );
   return result.data;
 };
+
+export const deleteQuestion = async (id: string): Promise<void> => {
+  await api.delete(routes_helpers.mountQuestionId(id), authConfig());
+};
