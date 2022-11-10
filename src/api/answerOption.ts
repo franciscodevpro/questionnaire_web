@@ -40,3 +40,7 @@ export const updateAnswerOption = async (
   );
   return result.data;
 };
+
+export const deleteAnswerOption = async (id: string): Promise<void> => {
+  await api.delete(routes_helpers.mountAnswerOptionId(id), authConfig());
+};
