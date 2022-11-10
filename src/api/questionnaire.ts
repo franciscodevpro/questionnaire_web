@@ -49,6 +49,39 @@ export const saveQuestionnaire = async (
   return result.data;
 };
 
+export const updateQuestionnaire = async (
+  id: string,
+  questionnaire: QuestionnaireRequestType
+): Promise<QuestionnaireRequestResultType> => {
+  const {
+    name = "",
+    image = "",
+    quantity = 0,
+    endDate = "",
+    link = "",
+    exceedsQuantity = false,
+    canBeOnline = false,
+    deviceIds = [],
+    applierIds = [],
+  } = questionnaire;
+  const result = await api.patch(
+    routes_helpers.mountQuestionnaireId(id),
+    {
+      name,
+      image,
+      quantity: typeof quantity === "number" ? quantity : parseInt(quantity),
+      endDate,
+      link,
+      exceedsQuantity,
+      canBeOnline,
+      deviceIds,
+      applierIds,
+    },
+    authConfig()
+  );
+  return result.data;
+};
+
 export const findAllQuestionnaire = async (): Promise<
   QuestionnaireResponseType[]
 > => {
