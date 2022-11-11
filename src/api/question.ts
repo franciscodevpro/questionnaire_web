@@ -30,7 +30,7 @@ export const updateQuestion = async (
     shuffle,
     prioritizeBySelection,
   } = question;
-  const result = await api.post(
+  const result = await api.patch(
     routes_helpers.mountQuestionId(id),
     {
       title,

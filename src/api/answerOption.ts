@@ -33,7 +33,7 @@ export const updateAnswerOption = async (
   answerOption: AnswerOptionRequestType
 ): Promise<AnswerOptionRequestResultType> => {
   const { title, status } = answerOption;
-  const result = await api.post(
+  const result = await api.patch(
     routes_helpers.mountAnswerOptionId(id),
     { title, status },
     authConfig()
