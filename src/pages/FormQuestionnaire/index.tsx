@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { saveAnswerOption } from "../../api/answerOption";
+import {
+  deleteAnswerOption,
+  saveAnswerOption,
+  updateAnswerOption,
+} from "../../api/answerOption";
 import { findAllAppliers } from "../../api/appliers";
-import { saveQuestion } from "../../api/question";
+import { saveQuestion, updateQuestion } from "../../api/question";
 import {
   getSpecificQuestionnaire,
   saveQuestionnaire,
+  updateQuestionnaire,
 } from "../../api/questionnaire";
 import { Main } from "../../components/Main";
 import { Question } from "../../components/Question";
-import { AnswerOptionRequestType } from "../../types/answerOption";
+import {
+  AnswerOptionRequestType,
+  AnswerOptionResponseType,
+} from "../../types/answerOption";
 import { ApplierResponseType } from "../../types/applier";
 import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
@@ -28,10 +36,34 @@ export const FormQuestionnaire = ({
     | null
   >(null);
   const [deletedQuestions, setDeletedQuestions] = useState<string[]>([]);
+  const [deletedAnswerOptions, setDeletedAnswerOptions] = useState<string[]>(
+    []
+  );
   const [appliers, setAppliers] = useState<ApplierResponseType[] | null>(null);
 
+  const deleteRemovedData = () => {
+    return new Promise(async (resolve) => {
+      console.log("Removendo dados deletados...");
+      if (!!deletedAnswerOptions.length)
+        await Promise.all(
+          deletedAnswerOptions.map(async (id) => {
+            console.log("Deletando opção de resposta: " + id);
+            await deleteAnswerOption(id);
+          })
+        );
+      if (!!deletedQuestions.length)
+        await Promise.all(
+          deletedQuestions.map(async (id) => {
+            console.log("Deletando pergunta: " + id);
+            await deleteAnswerOption(id);
+          })
+        );
+      return resolve(null);
+    });
+  };
+
   const createAnswerOptions = (answerOptions: AnswerOptionRequestType[]) =>
-    new Promise(async () => {
+    new Promise(async (resolve) => {
       console.log("Adicionando opções...");
       await Promise.all(
         answerOptions.map(async (answerOption) => {
@@ -45,11 +77,36 @@ export const FormQuestionnaire = ({
         })
       );
       console.log("Opções adicionadas");
-      return;
+      return resolve(null);
+    });
+
+  const changeAnswerOptions = (answerOptions: AnswerOptionResponseType[]) =>
+    new Promise(async (resolve) => {
+      console.log("Alterando opções...");
+      await Promise.all(
+        answerOptions.map(async (answerOption) => {
+          console.log("Alterando opção: " + answerOption?.title);
+          const { id, idQuestion, title, status } = answerOption;
+          if (id.includes("new:"))
+            await saveAnswerOption({
+              idQuestion,
+              title,
+              status,
+            });
+          else if (id.includes("update:"))
+            await updateAnswerOption(id.split(":")[1], {
+              idQuestion,
+              title,
+              status,
+            });
+        })
+      );
+      console.log("Opções adicionadas");
+      return resolve(null);
     });
 
   const createQuestions = async (questions: QuestionResponseType[]) =>
-    new Promise(async () => {
+    new Promise(async (resolve) => {
       console.log("Salvando perguntas");
       await Promise.all(
         questions.map(async (question) => {
@@ -88,9 +145,86 @@ export const FormQuestionnaire = ({
         })
       );
       console.log("Perguntas salvas com sucesso!");
+      return resolve(null);
+    });
+
+  const changeQuestions = async (questions: QuestionResponseType[]) =>
+    new Promise(async (resolve) => {
+      console.log("Atualizando perguntas");
+      await Promise.all(
+        questions.map(async (question) => {
+          let {
+            id,
+            idQuestionnaire,
+            title,
+            variable,
+            type,
+            minAnswers,
+            maxAnswers,
+            defaultValue,
+            shuffle,
+            prioritizeBySelection,
+            answerOptions,
+          } = question;
+          console.log("Salvando pergunta: " + title);
+          if (id.includes("new:")) {
+            const result = await updateQuestion(id.split(":")[1], {
+              idQuestionnaire,
+              title,
+              variable,
+              type,
+              minAnswers,
+              maxAnswers,
+              defaultValue,
+              shuffle,
+              prioritizeBySelection,
+            });
+            id = result.id;
+
+            await createAnswerOptions(
+              answerOptions.map((el) => ({
+                ...el,
+                idQuestion: id,
+              }))
+            );
+          } else if (id.includes("update:")) {
+            await updateQuestion(id.split(":")[1], {
+              idQuestionnaire,
+              title,
+              variable,
+              type,
+              minAnswers,
+              maxAnswers,
+              defaultValue,
+              shuffle,
+              prioritizeBySelection,
+            });
+
+            await changeAnswerOptions(
+              answerOptions.map((el) => ({
+                ...el,
+                idQuestion: id,
+              }))
+            );
+          }
+
+          await changeAnswerOptions(
+            answerOptions.map((el) => ({
+              ...el,
+              idQuestion: id,
+            }))
+          );
+
+          console.log("Opções já salvas!!!!");
+          return;
+        })
+      );
+      console.log("Perguntas salvas com sucesso!");
+      return resolve(null);
     });
 
   const createQuestionnaire = async () => {
+    console.log("Criando questionário...");
     if (!data) return;
     const {
       name,
@@ -120,18 +254,47 @@ export const FormQuestionnaire = ({
     );
   };
 
-  const updateQuestionnaire = async () => {
-    return Promise.resolve(console.log("atualizando questionário..."));
+  const changeQuestionnaire = async () => {
+    console.log("Atualizando questionário...");
+    if (!data) return;
+    console.log(data);
+    const {
+      id,
+      name,
+      image,
+      quantity,
+      endDate,
+      link,
+      exceedsQuantity,
+      canBeOnline,
+      devices,
+      appliers,
+      questions,
+    } = data;
+    console.log("Foi: 1");
+    if (id.includes("update:"))
+      await updateQuestionnaire(id.split(":")[1], {
+        name,
+        image,
+        quantity,
+        endDate,
+        link,
+        exceedsQuantity,
+        canBeOnline,
+        deviceIds: devices.map((el) => el.id),
+        applierIds: appliers.map((el) => el.id),
+      });
+    console.log("Foi: 2");
+    await deleteRemovedData();
+    console.log("Foi: 3");
+    await changeQuestions(
+      questions.map((el) => ({ ...el, idQuestionnaire: id }))
+    );
   };
 
   const handleSaveQuestionnaire = async () => {
-    if (!data?.id) {
-      console.log("Calling createQuestionnaire method...");
-      await createQuestionnaire();
-      console.log("CreateQuestionnaire method called!!!");
-      return;
-    }
-    return await updateQuestionnaire();
+    if (!data?.id) return await createQuestionnaire();
+    return await changeQuestionnaire();
   };
 
   const newQuestionnaire = async () => {
@@ -206,6 +369,11 @@ export const FormQuestionnaire = ({
     );
     setDeletedQuestions([...deletedQuestions, id]);
     setData(newData as any);
+  };
+  const removeAnswerOption = (id: string) => {
+    if (id.includes(":") || deletedAnswerOptions.find((elm) => elm === id))
+      return;
+    setDeletedAnswerOptions([...deletedAnswerOptions, id]);
   };
   useEffect(() => {
     if (id) getDada(id);
@@ -304,15 +472,19 @@ export const FormQuestionnaire = ({
               {...question}
               key={question.id}
               onClickInRemove={() => removeQuestion(question.id)}
+              onRemoveAnswerOption={(id) => removeAnswerOption(id)}
               onChangeValue={(question) => {
                 setData({
                   ...data,
                   questions: data.questions.map((quest) => {
-                    if (quest.id === question.id) return question;
+                    if (
+                      quest.id === question.id ||
+                      "update:" + quest.id === question.id
+                    )
+                      return question;
                     return quest;
                   }),
                 });
-                console.log(data);
               }}
             />
           ))}
