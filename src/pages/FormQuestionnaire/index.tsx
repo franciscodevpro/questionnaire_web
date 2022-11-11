@@ -43,18 +43,15 @@ export const FormQuestionnaire = ({
 
   const deleteRemovedData = () => {
     return new Promise(async (resolve) => {
-      console.log("Removendo dados deletados...");
       if (!!deletedAnswerOptions.length)
         await Promise.all(
           deletedAnswerOptions.map(async (id) => {
-            console.log("Deletando opção de resposta: " + id);
             await deleteAnswerOption(id);
           })
         );
       if (!!deletedQuestions.length)
         await Promise.all(
           deletedQuestions.map(async (id) => {
-            console.log("Deletando pergunta: " + id);
             await deleteAnswerOption(id);
           })
         );
@@ -64,10 +61,8 @@ export const FormQuestionnaire = ({
 
   const createAnswerOptions = (answerOptions: AnswerOptionRequestType[]) =>
     new Promise(async (resolve) => {
-      console.log("Adicionando opções...");
       await Promise.all(
         answerOptions.map(async (answerOption) => {
-          console.log("Adicionando opção: " + answerOption?.title);
           const { idQuestion, title, status } = answerOption;
           await saveAnswerOption({
             idQuestion,
@@ -76,16 +71,13 @@ export const FormQuestionnaire = ({
           });
         })
       );
-      console.log("Opções adicionadas");
       return resolve(null);
     });
 
   const changeAnswerOptions = (answerOptions: AnswerOptionResponseType[]) =>
     new Promise(async (resolve) => {
-      console.log("Alterando opções...");
       await Promise.all(
         answerOptions.map(async (answerOption) => {
-          console.log("Alterando opção: " + answerOption?.title);
           const { id, idQuestion, title, status } = answerOption;
           if (id.includes("new:"))
             await saveAnswerOption({
@@ -101,13 +93,11 @@ export const FormQuestionnaire = ({
             });
         })
       );
-      console.log("Opções adicionadas");
       return resolve(null);
     });
 
   const createQuestions = async (questions: QuestionResponseType[]) =>
     new Promise(async (resolve) => {
-      console.log("Salvando perguntas");
       await Promise.all(
         questions.map(async (question) => {
           const {
@@ -122,7 +112,6 @@ export const FormQuestionnaire = ({
             prioritizeBySelection,
             answerOptions,
           } = question;
-          console.log("Salvando pergunta: " + title);
           const questionResponse = await saveQuestion({
             idQuestionnaire,
             title,
@@ -140,17 +129,14 @@ export const FormQuestionnaire = ({
               idQuestion: questionResponse.id,
             }))
           );
-          console.log("Opções já salvas!!!!");
           return;
         })
       );
-      console.log("Perguntas salvas com sucesso!");
       return resolve(null);
     });
 
   const changeQuestions = async (questions: QuestionResponseType[]) =>
     new Promise(async (resolve) => {
-      console.log("Atualizando perguntas");
       await Promise.all(
         questions.map(async (question) => {
           let {
@@ -166,7 +152,6 @@ export const FormQuestionnaire = ({
             prioritizeBySelection,
             answerOptions,
           } = question;
-          console.log("Salvando pergunta: " + title);
           if (id.includes("new:")) {
             const result = await updateQuestion(id.split(":")[1], {
               idQuestionnaire,
@@ -215,16 +200,13 @@ export const FormQuestionnaire = ({
             }))
           );
 
-          console.log("Opções já salvas!!!!");
           return;
         })
       );
-      console.log("Perguntas salvas com sucesso!");
       return resolve(null);
     });
 
   const createQuestionnaire = async () => {
-    console.log("Criando questionário...");
     if (!data) return;
     const {
       name,
@@ -255,9 +237,7 @@ export const FormQuestionnaire = ({
   };
 
   const changeQuestionnaire = async () => {
-    console.log("Atualizando questionário...");
     if (!data) return;
-    console.log(data);
     const {
       id,
       name,
@@ -271,7 +251,6 @@ export const FormQuestionnaire = ({
       appliers,
       questions,
     } = data;
-    console.log("Foi: 1");
     if (id.includes("update:"))
       await updateQuestionnaire(id.split(":")[1], {
         name,
@@ -284,15 +263,14 @@ export const FormQuestionnaire = ({
         deviceIds: devices.map((el) => el.id),
         applierIds: appliers.map((el) => el.id),
       });
-    console.log("Foi: 2");
     await deleteRemovedData();
-    console.log("Foi: 3");
     await changeQuestions(
       questions.map((el) => ({ ...el, idQuestionnaire: id }))
     );
   };
 
   const handleSaveQuestionnaire = async () => {
+    console.log(data);
     if (!data?.id) return await createQuestionnaire();
     return await changeQuestionnaire();
   };
@@ -340,8 +318,6 @@ export const FormQuestionnaire = ({
     setAppliers(appliers);
     const questionnaire = await getSpecificQuestionnaire(id);
     setData(questionnaire);
-    console.log(questionnaire);
-    console.log(appliers);
   };
   const addQuestion = () => {
     const newData = { ...data };
@@ -362,7 +338,6 @@ export const FormQuestionnaire = ({
     setData(newData as any);
   };
   const removeQuestion = (id: string) => {
-    console.log("Removendo questão: " + id);
     const newData = { ...data };
     newData.questions = data?.questions?.filter(
       (question) => question.id !== id

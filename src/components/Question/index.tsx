@@ -70,7 +70,6 @@ export const Question = ({
     (key: keyof QuestionResponseType | string) => (evt: any) => {
       if (!evt?.target?.value) return;
       changeOneOfValues(key, evt.target.value);
-      console.log(questinData);
       onChangeValue?.(questinData);
     };
 

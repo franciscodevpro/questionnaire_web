@@ -1,6 +1,6 @@
 import {
-  saveAccessToken,
   removeAccessToken,
+  saveAccessToken,
 } from "../../repositories/tokenRepository";
 import { LoginType } from "../../types/login";
 import { errorMessagePopup } from "../../util/messages";
@@ -15,7 +15,6 @@ export const doLogin = async ({
     return errorMessagePopup(
       "Erro ao tentar efetuar login. Verifique o login e senha e tente novemante"
     );
-  console.log(result?.data);
   saveAccessToken({
     accessToken: result?.data?.token,
     expiresIn: result?.data?.tokenExpiration,
