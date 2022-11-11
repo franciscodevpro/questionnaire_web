@@ -6,6 +6,7 @@ import "./styles.css";
 type QuestionProps = Partial<QuestionResponseType> & {
   onChangeValue?: (value: QuestionResponseType) => void;
   onClickInRemove?: () => void;
+  onRemoveAnswerOption?: (id: string) => void;
 };
 
 export const Question = ({
@@ -23,6 +24,7 @@ export const Question = ({
   answerOptions = [],
   onChangeValue,
   onClickInRemove,
+  onRemoveAnswerOption,
 }: QuestionProps) => {
   const [questinData, setQuestionData] = useState<QuestionResponseType>({
     id,
@@ -38,29 +40,37 @@ export const Question = ({
     isActive,
     answerOptions,
   });
+
   const changeOneOfValues = (
     key: keyof QuestionResponseType | string,
     value: any
   ) => {
+    let questionId = id;
+    if (!questionId.includes(":")) questionId = "update:" + id;
     if (/.+\[.+\]\./.test(key)) {
       const ke = key.replace(/\[.+/, "") as "answerOptions";
       const id = key.replace(/.+\[/, "").replace(/\].+/, "");
       const k = key.replace(/.+\]\./, "");
       const newArray = questinData[ke]?.map((e: any) => {
         if (e.id !== id) return e;
-        else return { ...e, [k]: value };
+        let answerOptionId = e.id;
+        if (!answerOptionId.includes(":"))
+          answerOptionId = "update:" + answerOptionId;
+        const newData = { ...e, [k]: value, id: answerOptionId };
+        return newData;
       });
       setQuestionData({
         ...questinData,
         [ke]: newArray,
       });
-    } else setQuestionData({ ...questinData, [key]: value });
+    } else setQuestionData({ ...questinData, [key]: value, id: questionId });
   };
 
   const handleChangeValue =
     (key: keyof QuestionResponseType | string) => (evt: any) => {
       if (!evt?.target?.value) return;
       changeOneOfValues(key, evt.target.value);
+      console.log(questinData);
       onChangeValue?.(questinData);
     };
 
@@ -85,6 +95,7 @@ export const Question = ({
     );
     setQuestionData(newQuestionData);
     onChangeValue?.(questinData);
+    onRemoveAnswerOption?.(id);
   };
   return (
     <section className="question-section">
