@@ -16,6 +16,12 @@ section.question-section .type, section.question-section .variable {
     width: 265px;
 }
 
+
+
+section.question-section .minAnswers, section.question-section .maxAnswers {
+    width: 70px;
+}
+
 section.question-section section {
     display: flex;
     flex-wrap: wrap;

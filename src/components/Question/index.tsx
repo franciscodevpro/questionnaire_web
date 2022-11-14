@@ -128,6 +128,34 @@ export const Question = ({
           onChange={handleChangeValue("variable")}
         />
       </p>
+
+      {questinData.type === "2" && (
+        <>
+          <p className="minAnswers">
+            <label htmlFor="minAnswers">Mínimo:</label>
+            <input
+              type="number"
+              name="minAnswers"
+              defaultValue={questinData.minAnswers}
+              onChange={handleChangeValue("minAnswers")}
+              min={0}
+              max={questinData.maxAnswers || answerOptions.length}
+            />
+          </p>
+          <p className="maxAnswers">
+            <label htmlFor="maxAnswers">Máximo:</label>
+            <input
+              type="number"
+              name="maxAnswers"
+              defaultValue={questinData.maxAnswers}
+              onChange={handleChangeValue("maxAnswers")}
+              min={questinData.minAnswers || 0}
+              max={answerOptions.length}
+            />
+          </p>
+        </>
+      )}
+
       {questinData.type !== "3" && (
         <section>
           <label>Opções de resposta:</label>
