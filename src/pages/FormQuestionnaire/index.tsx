@@ -300,19 +300,30 @@ export const FormQuestionnaire = ({
     key: keyof QuestionnaireResponseType,
     value: any
   ) => {
-    if (!!data) setData({ ...data, [key]: value });
+    let questionnaireId = data?.id || "";
+    if (!!questionnaireId && !questionnaireId.includes(":"))
+      questionnaireId = "update:" + data?.id;
+    if (!!data) setData({ ...data, [key]: value, id: questionnaireId });
   };
 
   const changeAppliers = (
     { id, name }: { id: string; name: string },
     present: boolean
   ) => {
+    let questionnaireId = data?.id || "";
+    if (!!questionnaireId && !questionnaireId.includes(":"))
+      questionnaireId = "update:" + data?.id;
     const appliers: { id: string; name: string }[] | undefined = present
       ? data?.appliers.find((el) => el.id === id)
         ? data?.appliers
         : [...(data?.appliers || []), { id, name }]
       : data?.appliers.filter((elm) => elm.id !== id);
-    if (!!data) setData({ ...data, appliers: appliers || data.appliers });
+    if (!!data)
+      setData({
+        ...data,
+        appliers: appliers || data.appliers,
+        id: questionnaireId,
+      });
   };
 
   const getDada = async (id: string) => {
@@ -401,7 +412,7 @@ export const FormQuestionnaire = ({
             type="checkbox"
             name="exceedsQuantity"
             value="true"
-            defaultChecked={data?.exceedsQuantity}
+            checked={data?.exceedsQuantity}
             onChange={(evt) =>
               changeDataValue("exceedsQuantity", evt.target.checked)
             }
@@ -413,7 +424,7 @@ export const FormQuestionnaire = ({
             type="checkbox"
             name="canBeOnline"
             value="true"
-            defaultChecked={!!data?.canBeOnline}
+            checked={!!data?.canBeOnline}
             onChange={(evt) =>
               changeDataValue("canBeOnline", evt.target.checked)
             }
