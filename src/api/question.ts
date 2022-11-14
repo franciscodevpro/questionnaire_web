@@ -36,8 +36,10 @@ export const updateQuestion = async (
       title,
       variable,
       type,
-      minAnswers,
-      maxAnswers,
+      minAnswers:
+        typeof minAnswers !== "number" ? parseInt(minAnswers) : minAnswers,
+      maxAnswers:
+        typeof maxAnswers !== "number" ? parseInt(maxAnswers) : maxAnswers,
       defaultValue,
       shuffle,
       prioritizeBySelection,
