@@ -20,9 +20,6 @@ export const Router = () => {
   };
 
   const goIfLoggedIn = (ChildComponent: JSX.Element) => {
-    if (isLoggedIn()) {
-      startContext();
-    }
     return (
       <>
         {!isLoggedIn() ? (
