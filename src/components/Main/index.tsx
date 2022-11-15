@@ -1,10 +1,11 @@
 import { BiDevices } from "@react-icons/all-files/bi/BiDevices";
 import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
 import { FiUser } from "@react-icons/all-files/fi/FiUser";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { doLogout } from "../../api/signin/login";
-import { routes_constraints } from "../../util/route_utils";
+import MainContext from "../../contexts/questionnaire-context";
+import { routes_constraints, routes_helpers } from "../../util/route_utils";
 import { MenuItem } from "../MenuItem";
 import "./styles.css";
 
@@ -12,6 +13,7 @@ type MainProps = PropsWithChildren & { title: string };
 
 export const Main = ({ children, title }: MainProps) => {
   const [active, setActive] = useState("1");
+  const { questionnaires } = useContext(MainContext);
   return (
     <main className="main">
       <nav>
@@ -25,13 +27,15 @@ export const Main = ({ children, title }: MainProps) => {
             <MenuItem
               icon={<FiSettings size={20} />}
               title={{ value: "Questionários" }}
-              items={[
-                { value: "Eleições para senador de felicidade", id: "1" },
-                { value: "Eleições para senador", id: "2" },
-                { value: "Eleições para presidente", id: "3" },
-              ]}
+              items={questionnaires.map((elm) => ({
+                value: elm.name,
+                id: elm.id,
+                link: routes_helpers.mountQuestionnaireId(elm.id),
+              }))}
               activeItem={active}
-              onItemClick={(id) => setActive(id)}
+              onItemClick={(id) => {
+                setActive(id);
+              }}
               titleLink={routes_constraints.QUESTIONNAIRE}
             />
           </li>
