@@ -6,7 +6,7 @@ import "./styles.css";
 type MenuItemProps = {
   icon: any;
   title: { value: string };
-  items: { value: string; id: string }[];
+  items: { value: string; id: string; link?: string }[];
   activeItem?: string;
   onItemClick?: (id: string) => void;
   titleLink?: string;
@@ -35,7 +35,11 @@ export const MenuItem = ({
       </Link>
       <ul className={open ? "open" : "closed"}>
         {items.map((e, key) => (
-          <Link key={e.value} to={""} onClick={() => onItemClick?.(e.id)}>
+          <Link
+            key={e.value}
+            to={e.link || ""}
+            onClick={() => onItemClick?.(e.id)}
+          >
             <li
               className={activeItem && activeItem === e.id ? "active" : ""}
               title={e.value}
