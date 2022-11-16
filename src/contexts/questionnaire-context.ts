@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { ApplierRequestResultType } from "../types/applier";
 import { QuestionnaireRequestResultType } from "../types/questionnaire";
 
 const MainContext = createContext<{
@@ -7,7 +8,8 @@ const MainContext = createContext<{
   restartContext?: () => Promise<void>;
   openedMenuItems?: [{ [key: string]: boolean }, string?];
   setOpenedMenuItems?: (items: [{ [key: string]: boolean }, string?]) => void;
-}>({ questionnaires: [] });
+  appliers: ApplierRequestResultType[];
+}>({ questionnaires: [], appliers: [] });
 
 export const MainContextProvider = MainContext.Provider;
 export const MainContextConsumer = MainContext.Consumer;
