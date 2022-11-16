@@ -367,7 +367,7 @@ export const FormQuestionnaire = ({
   useEffect(() => {
     if (id) getDada(id);
     else newQuestionnaire();
-  }, []);
+  }, [id]);
   return (
     <Main title="Questionário - salvar">
       <div className="main-button">
