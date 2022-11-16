@@ -1,9 +1,11 @@
 import { FiChevronRight } from "@react-icons/all-files/fi/FiChevronRight";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import MainContext from "../../contexts/questionnaire-context";
 import "./styles.css";
 
 type MenuItemProps = {
+  id: string;
   icon: any;
   title: { value: string };
   items: { value: string; id: string; link?: string }[];
@@ -13,19 +15,23 @@ type MenuItemProps = {
 };
 
 export const MenuItem = ({
+  id,
   icon,
   title,
   items,
-  activeItem,
   onItemClick,
   titleLink,
 }: MenuItemProps) => {
-  const [open, setOpen] = useState(false);
+  const { openedMenuItems, setOpenedMenuItems } = useContext(MainContext);
+  const [open, setOpen] = useState(openedMenuItems?.[0]?.[id]);
   return (
     <>
       <Link to={titleLink || ""}>
         <header
-          onClick={() => setOpen(!open)}
+          onClick={() => {
+            setOpen(!open);
+            setOpenedMenuItems?.([{ ...openedMenuItems?.[0], [id]: true }]);
+          }}
           style={!open ? { opacity: 0.5 } : {}}
         >
           <>{icon}</>
@@ -38,10 +44,17 @@ export const MenuItem = ({
           <Link
             key={e.value}
             to={e.link || ""}
-            onClick={() => onItemClick?.(e.id)}
+            onClick={() => {
+              setOpenedMenuItems?.([{ ...openedMenuItems?.[0] }, e.id]);
+              onItemClick?.(e.id);
+            }}
           >
             <li
-              className={activeItem && activeItem === e.id ? "active" : ""}
+              className={
+                openedMenuItems?.[1] && openedMenuItems[1] === e.id
+                  ? "active"
+                  : ""
+              }
               title={e.value}
             >
               {e.value}

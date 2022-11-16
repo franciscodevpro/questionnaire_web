@@ -13,6 +13,9 @@ export const Router = () => {
   const [questionnaires, setQuestionnaires] = useState<
     QuestionnaireRequestResultType[]
   >([]);
+  const [openedMenuItems, setOpenedMenuItems] = useState<
+    [{ [key: string]: boolean }, string?]
+  >([{}]);
 
   const startContext = async () => {
     const questionnaireResult = await findAllQuestionnaire();
@@ -37,6 +40,9 @@ export const Router = () => {
         setQuestionnaires: (params: QuestionnaireRequestResultType[]) =>
           setQuestionnaires(params),
         restartContext: async () => startContext(),
+        openedMenuItems,
+        setOpenedMenuItems: (params: [{ [key: string]: boolean }, string?]) =>
+          setOpenedMenuItems(params),
       }}
     >
       <BrowserRouter>

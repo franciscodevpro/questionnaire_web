@@ -25,6 +25,7 @@ export const Main = ({ children, title }: MainProps) => {
         <ul>
           <li>
             <MenuItem
+              id={"1"}
               icon={<FiSettings size={20} />}
               title={{ value: "Questionários" }}
               items={questionnaires.map((elm) => ({
@@ -41,6 +42,7 @@ export const Main = ({ children, title }: MainProps) => {
           </li>
           <li>
             <MenuItem
+              id={"2"}
               icon={<BiDevices size={20} />}
               title={{ value: "Aparelhos" }}
               items={[
@@ -54,6 +56,7 @@ export const Main = ({ children, title }: MainProps) => {
           </li>
           <li>
             <MenuItem
+              id={"3"}
               icon={<FiUser size={20} />}
               title={{ value: "Entrevistadores" }}
               items={[
