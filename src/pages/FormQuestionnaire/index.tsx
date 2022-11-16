@@ -21,6 +21,7 @@ import {
 import { ApplierResponseType } from "../../types/applier";
 import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
+import { successMessagePopup } from "../../util/messages";
 import "./styles.css";
 
 type FormQuestionnaireProps = {
@@ -234,7 +235,7 @@ export const FormQuestionnaire = ({
     await createQuestions(
       questions.map((el) => ({ ...el, idQuestionnaire: questionnaire.id }))
     );
-    alert("Questionário criado com sucesso!");
+    successMessagePopup("Questionário criado com sucesso!");
   };
 
   const changeQuestionnaire = async () => {
@@ -269,7 +270,7 @@ export const FormQuestionnaire = ({
     await changeQuestions(
       questions.map((el) => ({ ...el, idQuestionnaire: id }))
     );
-    alert("Questionário atualizado com sucesso!");
+    successMessagePopup("Questionário atualizado com sucesso!");
   };
 
   const handleSaveQuestionnaire = async () => {
