@@ -13,7 +13,7 @@ type MainProps = PropsWithChildren & { title: string };
 
 export const Main = ({ children, title }: MainProps) => {
   const [active, setActive] = useState("1");
-  const { questionnaires } = useContext(MainContext);
+  const { questionnaires, appliers } = useContext(MainContext);
   return (
     <main className="main">
       <nav>
@@ -59,13 +59,14 @@ export const Main = ({ children, title }: MainProps) => {
               id={"3"}
               icon={<FiUser size={20} />}
               title={{ value: "Entrevistadores" }}
-              items={[
-                { value: "Francisco Carlos", id: "7" },
-                { value: "João Pedro", id: "8" },
-                { value: "João Victor", id: "9" },
-              ]}
+              items={appliers.map((elm) => ({
+                value: elm.name,
+                id: elm.id,
+                link: routes_helpers.mountApplierId(elm.id),
+              }))}
               activeItem={active}
               onItemClick={(id) => setActive(id)}
+              titleLink={routes_constraints.APPLIER}
             />
           </li>
         </ul>
