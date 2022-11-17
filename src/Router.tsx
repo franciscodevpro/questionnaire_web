@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { findAllAppliers } from "./api/appliers";
 import { findAllQuestionnaire } from "./api/questionnaire";
 import { MainContextProvider } from "./contexts/questionnaire-context";
+import { FormApplier } from "./pages/FormApplier";
 import { FormQuestionnaire } from "./pages/FormQuestionnaire";
 import { ListAppliers } from "./pages/ListAppliers";
 import { ListQuestionnaires } from "./pages/ListQuestionnaires";
@@ -82,6 +83,14 @@ export const Router = () => {
             <Route
               path={routes_constraints.APPLIER}
               element={goIfLoggedIn(<ListAppliers />)}
+            />
+            <Route
+              path={routes_constraints.APPLIER_CREATE}
+              element={goIfLoggedIn(<FormApplier />)}
+            />
+            <Route
+              path={routes_constraints.APPLIER_ID}
+              element={goIfLoggedIn(<FormApplier />)}
             />
           </Route>
         </Routes>
