@@ -1,5 +1,5 @@
 import { getAccessToken as getAccessTokenRepository } from "../repositories/tokenRepository";
-import { ApplierResponseType } from "../types/applier";
+import { ApplierRequestType, ApplierResponseType } from "../types/applier";
 import { routes_constraints, routes_helpers } from "../util/route_utils";
 import api from "./index";
 
@@ -16,6 +16,17 @@ const authConfig = () => ({
 export const findAllAppliers = async (): Promise<ApplierResponseType[]> => {
   const result = await api.get(routes_constraints.APPLIER);
   return result.data;
+};
+
+export const saveApplier = async (data: ApplierRequestType): Promise<void> => {
+  await api.post(routes_constraints.APPLIER, data, authConfig());
+};
+
+export const updateApplier = async (
+  id: string,
+  data: ApplierRequestType
+): Promise<void> => {
+  await api.patch(routes_helpers.mountApplierId(id), data, authConfig());
 };
 
 export const deleteApplier = async (id: string): Promise<void> => {
