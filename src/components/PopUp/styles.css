@@ -1,4 +1,4 @@
-.alert-container {
+.popup-container {
     position: fixed;
     display: flex;
     justify-content: center;
@@ -7,36 +7,23 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, .3);
     z-index: 1;
 }
-.alert-container .alert-content {
-    flex-direction: column;
+
+.popup-container.hidden {
+    visibility: hidden;
+    display: none;
+}
+
+.popup-background {
+    position: absolute;
     display: flex;
-    align-items: center;
     justify-content: center;
-    background-color: #FFF;
-    padding: 16px;
-    border-radius: 5px;
-    gap: 24px;
-}
-.alert-container .alert-content header {
-    text-align: center;
-}
-.alert-container .alert-content main {
-    display: flex;
-    gap: 24px;
-}
-.alert-container .alert-content main button {
-    padding: 8px 25px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    font-weight: bold;
-}
-.alert-container .alert-content main button.ok {
-    background-color: #9af;
-    color: #02f;
-}
-.alert-container .alert-content main button.cancel {
-    background-color: #ccc;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .3);
+    z-index: -1;
 }
