@@ -5,6 +5,7 @@ import { PopUp } from "../../components/PopUp";
 import MainContext from "../../contexts/questionnaire-context";
 import { DeviceRequestResultType, DeviceRequestType } from "../../types/device";
 import { successMessagePopup } from "../../util/messages";
+import { routes_constraints } from "../../util/route_utils";
 import { ListDevices } from "../ListDevices";
 import "./styles.css";
 
@@ -49,7 +50,7 @@ export const FormDevice = () => {
   return (
     <>
       <ListDevices />
-      <PopUp onClose={() => navigate(-1)}>
+      <PopUp onClose={() => navigate(routes_constraints.DEVICE)}>
         <form className="form-device">
           <p>
             <label>Nome do aparelho:</label>

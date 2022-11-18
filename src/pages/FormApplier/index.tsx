@@ -8,6 +8,7 @@ import {
   ApplierRequestType,
 } from "../../types/applier";
 import { successMessagePopup } from "../../util/messages";
+import { routes_constraints } from "../../util/route_utils";
 import { ListAppliers } from "../ListAppliers";
 import "./styles.css";
 
@@ -46,7 +47,7 @@ export const FormApplier = () => {
   return (
     <>
       <ListAppliers />
-      <PopUp onClose={() => navigate(-1)}>
+      <PopUp onClose={() => navigate(routes_constraints.APPLIER)}>
         <form className="form-applier">
           <p>
             <label>Nome do entrevistador:</label>
