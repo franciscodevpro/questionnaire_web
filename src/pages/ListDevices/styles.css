@@ -1,0 +1,55 @@
+.devices-title {
+    width: 100%;
+    margin-bottom: 16px;
+    color: #999;
+}
+
+.devices-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.devices-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #EEE;
+    margin-bottom: 8px;
+}
+
+.devices-list li a {
+    text-decoration: none;
+}
+
+.devices-list li .buttons-section > * {
+    padding: 8px 16px;
+    margin-left: 8px;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.devices-list li .buttons-section > .clone {
+    background-color: #FFF;
+}
+.devices-list li .buttons-section > .update {
+    background-color: #B2c4FF;
+    color: #1105FF;
+}
+.devices-list li .buttons-section > .remove {
+    background-color: rgba(255,0,0,.3);
+    color: #FF0505;
+}
+
+.main > main > .add {
+    padding: 16px 24px;
+    background-color: #B2c4FF;
+    color: #1105FF;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
