@@ -48,7 +48,7 @@ export const Main = ({ children, title }: MainProps) => {
               items={devices.map((elm) => ({
                 value: elm.name,
                 id: elm.id,
-                link: routes_helpers.mountApplierId(elm.id),
+                link: routes_helpers.mountDeviceId(elm.id),
               }))}
               activeItem={active}
               onItemClick={(id) => setActive(id)}
