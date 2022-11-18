@@ -36,9 +36,6 @@ export const ListDevices = ({}: ListDevicesProps) => {
               <p>{devices.name}</p>
             </Link>
             <section className="buttons-section">
-              <button type="button" className="clone">
-                Duplicar
-              </button>
               <button
                 type="button"
                 className="update"
