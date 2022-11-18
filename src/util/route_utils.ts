@@ -10,6 +10,9 @@ export const routes_constraints = {
   APPLIER_CREATE: "/appliers/create",
   ANSWER_OPTION: "/answer_options",
   ANSWER_OPTION_ID: "/answer_options/:id",
+  DEVICE: "/devices",
+  DEVICE_ID: "/devices/:id",
+  DEVICE_CREATE: "/devices/create",
 };
 
 export const routes_helpers = {
@@ -23,4 +26,6 @@ export const routes_helpers = {
     routes_constraints.ANSWER_OPTION_ID.replace(":id", id),
   mountApplierId: (id: string) =>
     routes_constraints.APPLIER_ID.replace(":id", id),
+  mountDeviceId: (id: string) =>
+    routes_constraints.DEVICE_ID.replace(":id", id),
 };
