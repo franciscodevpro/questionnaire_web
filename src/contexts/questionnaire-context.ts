@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { ApplierRequestResultType } from "../types/applier";
+import { DeviceRequestResultType } from "../types/device";
 import { QuestionnaireRequestResultType } from "../types/questionnaire";
 
 const MainContext = createContext<{
@@ -9,7 +10,8 @@ const MainContext = createContext<{
   openedMenuItems?: [{ [key: string]: boolean }, string?];
   setOpenedMenuItems?: (items: [{ [key: string]: boolean }, string?]) => void;
   appliers: ApplierRequestResultType[];
-}>({ questionnaires: [], appliers: [] });
+  devices: DeviceRequestResultType[];
+}>({ questionnaires: [], appliers: [], devices: [] });
 
 export const MainContextProvider = MainContext.Provider;
 export const MainContextConsumer = MainContext.Consumer;
