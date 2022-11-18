@@ -14,12 +14,12 @@ const authConfig = () => ({
 });
 
 export const findAllDevices = async (): Promise<DeviceResponseType[]> => {
-  const result = await api.get(routes_constraints.APPLIER);
+  const result = await api.get(routes_constraints.DEVICE);
   return result.data;
 };
 
 export const saveDevice = async (data: DeviceRequestType): Promise<void> => {
-  await api.post(routes_constraints.APPLIER, data, authConfig());
+  await api.post(routes_constraints.DEVICE, data, authConfig());
 };
 
 export const updateDevice = async (
