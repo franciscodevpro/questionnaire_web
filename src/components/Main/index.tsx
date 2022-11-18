@@ -13,7 +13,7 @@ type MainProps = PropsWithChildren & { title: string };
 
 export const Main = ({ children, title }: MainProps) => {
   const [active, setActive] = useState("1");
-  const { questionnaires, appliers } = useContext(MainContext);
+  const { questionnaires, appliers, devices } = useContext(MainContext);
   return (
     <main className="main">
       <nav>
@@ -45,13 +45,14 @@ export const Main = ({ children, title }: MainProps) => {
               id={"2"}
               icon={<BiDevices size={20} />}
               title={{ value: "Aparelhos" }}
-              items={[
-                { value: "Tablet novo", id: "4" },
-                { value: "Tablet antigo", id: "5" },
-                { value: "Celular novo", id: "6" },
-              ]}
+              items={devices.map((elm) => ({
+                value: elm.name,
+                id: elm.id,
+                link: routes_helpers.mountApplierId(elm.id),
+              }))}
               activeItem={active}
               onItemClick={(id) => setActive(id)}
+              titleLink={routes_constraints.DEVICE}
             />
           </li>
           <li>
