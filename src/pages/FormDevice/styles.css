@@ -1,0 +1,46 @@
+.form-device {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 410px;
+    width: 100%;
+    padding: 24px;
+    background-color: #fff;
+}
+.form-device p {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    color: #808080;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  
+  .form-device p label {
+    text-align: left;
+    margin-bottom: 8px;
+  }
+  
+  .form-device p input {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 5px;
+  }
+  
+  .form-device button {
+    display: inline-block;
+    border: 1px solid #777;
+    border-radius: 5px;
+    color: #1105FF;
+    background-color: #B2C4FF;
+    font-weight: bold;
+    padding: 15px 24px;
+    cursor: pointer;
+    transition: all .1s ease-in;  
+    box-shadow: 1px 1px 7px #BFBFBF;
+  }
+  .form-device button:active {
+    opacity: .7;
+    box-shadow: 0 0 0;
+  }

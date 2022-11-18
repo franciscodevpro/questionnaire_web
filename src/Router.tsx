@@ -5,8 +5,10 @@ import { findAllDevices } from "./api/devices";
 import { findAllQuestionnaire } from "./api/questionnaire";
 import { MainContextProvider } from "./contexts/questionnaire-context";
 import { FormApplier } from "./pages/FormApplier";
+import { FormDevice } from "./pages/FormDevice";
 import { FormQuestionnaire } from "./pages/FormQuestionnaire";
 import { ListAppliers } from "./pages/ListAppliers";
+import { ListDevices } from "./pages/ListDevices";
 import { ListQuestionnaires } from "./pages/ListQuestionnaires";
 import Login from "./pages/Login";
 import { ApplierRequestResultType } from "./types/applier";
@@ -97,6 +99,18 @@ export const Router = () => {
             <Route
               path={routes_constraints.APPLIER_ID}
               element={goIfLoggedIn(<FormApplier />)}
+            />
+            <Route
+              path={routes_constraints.DEVICE}
+              element={goIfLoggedIn(<ListDevices />)}
+            />
+            <Route
+              path={routes_constraints.DEVICE_CREATE}
+              element={goIfLoggedIn(<FormDevice />)}
+            />
+            <Route
+              path={routes_constraints.DEVICE_ID}
+              element={goIfLoggedIn(<FormDevice />)}
             />
           </Route>
         </Routes>
