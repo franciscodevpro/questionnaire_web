@@ -30,7 +30,10 @@
     align-items: center;
     padding: 10px;
 }
-.main > nav > ul header span {
+.main > nav > ul header .icon {
+    display: inline-flex;
+}
+.main > nav > ul header .span {
     margin-left: 10px;
     flex: 1;
 }

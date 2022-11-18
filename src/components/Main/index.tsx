@@ -33,10 +33,6 @@ export const Main = ({ children, title }: MainProps) => {
                 id: elm.id,
                 link: routes_helpers.mountQuestionnaireId(elm.id),
               }))}
-              activeItem={active}
-              onItemClick={(id) => {
-                setActive(id);
-              }}
               titleLink={routes_constraints.QUESTIONNAIRE}
             />
           </li>
@@ -50,8 +46,6 @@ export const Main = ({ children, title }: MainProps) => {
                 id: elm.id,
                 link: routes_helpers.mountDeviceId(elm.id),
               }))}
-              activeItem={active}
-              onItemClick={(id) => setActive(id)}
               titleLink={routes_constraints.DEVICE}
             />
           </li>
@@ -65,8 +59,6 @@ export const Main = ({ children, title }: MainProps) => {
                 id: elm.id,
                 link: routes_helpers.mountApplierId(elm.id),
               }))}
-              activeItem={active}
-              onItemClick={(id) => setActive(id)}
               titleLink={routes_constraints.APPLIER}
             />
           </li>
