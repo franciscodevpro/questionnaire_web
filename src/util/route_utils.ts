@@ -1,8 +1,9 @@
 export const routes_constraints = {
   LOGIN: "/",
   QUESTIONNAIRE: "/questionnaires",
-  QUESTIONNAIRE_CREATE: "/questionnaires/create",
   QUESTIONNAIRE_ID: "/questionnaires/:id",
+  QUESTIONNAIRE_CREATE: "/questionnaires/create",
+  QUESTIONNAIRE_DASHBOARD: "/questionnaires/:id/dashboard",
   QUESTION: "/questions",
   QUESTION_ID: "/questions/:id",
   APPLIER: "/appliers",
