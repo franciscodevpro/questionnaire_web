@@ -1,0 +1,27 @@
+.table-container {
+    margin-top: 24px;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    box-shadow: 0 0 5px #ccc;
+}
+
+.table-container td, .table-container th {
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.table-container td + td::before, .table-container th + th::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 0;
+    width: 0;
+    border: 1px solid #ccc
+} 
+
+.table-container th {
+    text-transform: capitalize;
+}
