@@ -13,6 +13,8 @@ const getAccessToken = (): string | null => {
   return accessToken.accessToken;
 };
 
+const apiPath = import.meta.env.VITE_SERVER_URL;
+
 const authConfig = () => ({
   headers: { "x-access-token": `Bearer ${getAccessToken()}` },
 });
@@ -47,7 +49,12 @@ export const findAllQuestionnaireData = async (
     routes_helpers.mountQuestionnaireDataIdQuestionnaire(questionnaireId),
     authConfig()
   );
-  return result.data;
+  return result.data.map((elm: any) => ({
+    ...elm,
+    audioPath: elm.audioPath.includes("http")
+      ? elm.audioPath
+      : `${apiPath}${elm.audioPath}`,
+  }));
 };
 
 export const getSpecificQuestionnaireData = async (
@@ -63,7 +70,13 @@ export const getSpecificQuestionnaireData = async (
     routes_helpers.mountAnswerIdQuestionnaireData(result.data.id),
     authConfig()
   );
-  return { ...result.data, answers: answersResult.data };
+  return {
+    ...result.data,
+    audioPath: result.data.audioPath.includes("http")
+      ? result.data.audioPath
+      : `${apiPath}${result.data.audioPath}`,
+    answers: answersResult.data,
+  };
 };
 
 export const deleteQuestionnaireData = async (id: string): Promise<void> => {
