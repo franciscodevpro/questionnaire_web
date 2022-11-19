@@ -1,9 +1,11 @@
+import _ from "lodash";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useParams } from "react-router-dom";
 import { getSpecificQuestionnaire } from "../../api/questionnaire";
 import { findAllQuestionnaireData } from "../../api/questionnaireData";
 import { Main } from "../../components/Main";
+import { Table } from "../../components/Table";
 import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
 import { QuestionnaireDataResponseType } from "../../types/questionnaireData";
@@ -19,11 +21,149 @@ export const Dashboard = () => {
     QuestionnaireDataResponseType[] | null
   >(null);
   const [center, setCenter] = useState<[number, number] | null>();
+  const [appliersStats, setAppliersStats] = useState<
+    | {
+        autor: string;
+        total: string;
+        "coletas por dia": string;
+        "duração média": string;
+        "última coleta": string;
+      }[]
+    | null
+  >([
+    {
+      autor: "",
+      total: "",
+      "coletas por dia": "",
+      "duração média": "",
+      "última coleta": "",
+    },
+  ]);
+  const [generalStats, setGeneralStats] = useState<
+    [string | number, string | number, string | number] | null
+  >(["", "", ""]);
+  const [lastQuestionnaires, setLastQuestionnaires] = useState<
+    { data: string; autor: string }[]
+  >([
+    { data: "", autor: "" },
+    { data: "", autor: "" },
+    { data: "", autor: "" },
+  ]);
+
+  const populateLastQuestionnaire = (
+    questionnaireDataResult: QuestionnaireDataResponseType[]
+  ) => {
+    setLastQuestionnaires([
+      { data: "", autor: "" },
+      { data: "", autor: "" },
+      { data: "", autor: "" },
+    ]);
+    const lastQuestionnairesData = _.orderBy(
+      questionnaireDataResult,
+      "createdAt",
+      "desc"
+    );
+    const resultData = lastQuestionnairesData
+      .filter((_, key) => key < 3)
+      .map((elm) => {
+        const lastQuestionnaireDate = new Date(
+          new Date(elm.createdAt).toISOString()
+        );
+        return {
+          autor: elm.applier.name,
+          data: `${lastQuestionnaireDate.getDate()}/${
+            lastQuestionnaireDate.getMonth() + 1
+          }/${lastQuestionnaireDate.getFullYear()} ${lastQuestionnaireDate.getHours()}:${lastQuestionnaireDate.getMinutes()}`,
+        };
+      });
+    setLastQuestionnaires(resultData);
+  };
+
+  const populateGeneralData = (
+    questionnaireDataResult: QuestionnaireDataResponseType[]
+  ) => {
+    setGeneralStats(["", "", ""]);
+    if (!questionnaireDataResult?.[0]) return;
+    const total = questionnaireDataResult.length;
+    const questionnairesByDay = _.groupBy(questionnaireDataResult, "createdAt");
+    const questionnairesByDayKeys = Object.keys(questionnairesByDay);
+    const statsByDay =
+      questionnairesByDayKeys
+        .map((elm) => questionnairesByDay[elm].length)
+        .reduce((prev, current) => prev + current) /
+      questionnairesByDayKeys.length;
+    const statsDuration =
+      questionnaireDataResult
+        .map((elm) => elm.duration)
+        .reduce((prev, current) => prev + current) /
+      questionnaireDataResult.length;
+
+    setGeneralStats([total, statsByDay, statsDuration]);
+  };
+
+  const populateAppliersData = (
+    questionnaireDataResult: QuestionnaireDataResponseType[]
+  ) => {
+    setAppliersStats([
+      {
+        autor: "",
+        total: "",
+        "coletas por dia": "",
+        "duração média": "",
+        "última coleta": "",
+      },
+    ]);
+    let resultData: any = [];
+    const appliersTotal = _.groupBy(questionnaireDataResult, "applier.name");
+    const applierNames = Object.keys(appliersTotal);
+    resultData = applierNames.map((applierName) => {
+      const questionnairesByDay = _.groupBy(
+        appliersTotal[applierName],
+        "createdAt"
+      );
+      const questionnairesByDayKeys = Object.keys(questionnairesByDay);
+      const statsByDay =
+        questionnairesByDayKeys
+          .map((elm) => questionnairesByDay[elm].length)
+          .reduce((prev, current) => prev + current) /
+        questionnairesByDayKeys.length;
+      const lastQuestionnaire = _.orderBy(
+        appliersTotal[applierName],
+        "createdAt",
+        "desc"
+      )[0].createdAt;
+      const lastQuestionnaireDate = new Date(
+        new Date(lastQuestionnaire).toISOString()
+      );
+      return {
+        autor: applierName,
+        total: appliersTotal[applierName].length,
+        "coletas por dia": statsByDay,
+        "duração média":
+          appliersTotal[applierName]
+            .map((elm) => elm.duration)
+            .reduce((prev, current) => prev + current) /
+          appliersTotal[applierName].length,
+        "última coleta":
+          lastQuestionnaire &&
+          `${lastQuestionnaireDate.getDate()}/${
+            lastQuestionnaireDate.getMonth() + 1
+          }/${lastQuestionnaireDate.getFullYear()} ${lastQuestionnaireDate.getHours()}:${lastQuestionnaireDate.getMinutes()}`,
+      };
+    });
+    setAppliersStats(resultData);
+  };
+
   const getDada = async (id: string) => {
     const questionnaireResult = await getSpecificQuestionnaire(id);
     setQuestionnaire(questionnaireResult);
     const questionnaireDataResult = await findAllQuestionnaireData(id);
     setQuestionnaireData(questionnaireDataResult);
+
+    populateAppliersData(questionnaireDataResult);
+    populateGeneralData(questionnaireDataResult);
+    populateLastQuestionnaire(questionnaireDataResult);
+
     const responseWithCoord = questionnaireDataResult?.find(
       (elm) => !!elm.lat && !!elm.lon
     );
@@ -33,6 +173,7 @@ export const Dashboard = () => {
       parseFloat(responseWithCoord.lon),
     ]);
   };
+
   useEffect(() => {
     if (!id) return;
     getDada(id);
@@ -50,6 +191,7 @@ export const Dashboard = () => {
                 borderRadius: 16,
                 overflow: "hidden",
                 resize: "both",
+                marginBottom: 24,
               }}
             >
               <MapContainer
@@ -82,19 +224,55 @@ export const Dashboard = () => {
               </MapContainer>
             </div>
           )}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+              boxSizing: "border-box",
+              padding: 10,
+            }}
+          >
+            {generalStats && (
+              <Table
+                title={"Performce geral"}
+                columns={["-", "Performce geral"]}
+                hideColumns={true}
+                data={[
+                  {
+                    "-": "Total de respostas",
+                    "Performce geral": generalStats[0],
+                  },
+                  { "-": "Média por dia", "Performce geral": generalStats[1] },
+                  { "-": "Tempo médio", "Performce geral": generalStats[2] },
+                ]}
+                style={{ display: "inline" }}
+              />
+            )}
 
-          <div>
-            {questionnaireData
-              ?.filter((element) => !!element.audioPath)
-              .map((elm) => (
-                <p key={elm.id}>
-                  {elm.audioPath}
-                  <audio controls autoPlay={false}>
-                    <source src={elm.audioPath} />
-                  </audio>
-                </p>
-              ))}
+            {lastQuestionnaires && (
+              <Table
+                title={"Últimas coletas recebidas"}
+                columns={["autor", "data"]}
+                data={lastQuestionnaires}
+                style={{ display: "inline" }}
+              />
+            )}
           </div>
+
+          {appliersStats && (
+            <Table
+              columns={[
+                "autor",
+                "total",
+                "coletas por dia",
+                "duração média",
+                "última coleta",
+              ]}
+              data={appliersStats}
+              style={{ width: "calc(100% - 16px)" }}
+            />
+          )}
         </section>
         <ul>
           {questionnaire?.questions.map((question) => (
