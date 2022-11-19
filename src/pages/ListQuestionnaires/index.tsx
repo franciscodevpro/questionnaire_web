@@ -32,7 +32,9 @@ export const ListQuestionnaires = ({}: ListQuestionnairesProps) => {
       <ul className="questionarios-list">
         {questionnaires?.map((questionnaire) => (
           <li key={questionnaire.id}>
-            <Link to={routes_helpers.mountQuestionnaireId(questionnaire.id)}>
+            <Link
+              to={routes_helpers.mountQuestionnaireDashboard(questionnaire.id)}
+            >
               <p>{questionnaire.name}</p>
             </Link>
             <section className="buttons-section">

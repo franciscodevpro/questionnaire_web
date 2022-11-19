@@ -23,6 +23,8 @@ export const routes_constraints = {
 export const routes_helpers = {
   mountQuestionnaireId: (id: string) =>
     routes_constraints.QUESTIONNAIRE_ID.replace(":id", id),
+  mountQuestionnaireDashboard: (id: string) =>
+    routes_constraints.QUESTIONNAIRE_DASHBOARD.replace(":id", id),
   mountQuestionIdQuestionnaire: (idQuestionnaire: string) =>
     `${routes_constraints.QUESTION}?idQuestionnaire=${idQuestionnaire}`,
   mountQuestionnaireDataIdQuestionnaire: (idQuestionnaire: string) =>
