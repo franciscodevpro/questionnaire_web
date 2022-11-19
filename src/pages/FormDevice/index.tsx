@@ -1,3 +1,4 @@
+import { BiX } from "@react-icons/all-files/bi/BiX";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { saveDevice, updateDevice } from "../../api/devices";
@@ -52,6 +53,13 @@ export const FormDevice = () => {
       <ListDevices />
       <PopUp onClose={() => navigate(routes_constraints.DEVICE)}>
         <form className="form-device">
+          <button
+            type="button"
+            className="close-button"
+            onClick={() => navigate(routes_constraints.DEVICE)}
+          >
+            <BiX />
+          </button>
           <p>
             <label>Nome do aparelho:</label>
             <input

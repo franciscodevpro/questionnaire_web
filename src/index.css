@@ -38,3 +38,14 @@ button:active {
   opacity: .7;
   transition: all .12s ease-out;
 }
+button.close-button {
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  color: #f76363;
+  box-shadow: none;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  transform: scale(1.5);
+}

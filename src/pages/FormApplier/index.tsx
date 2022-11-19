@@ -1,3 +1,4 @@
+import { BiX } from "@react-icons/all-files/bi/BiX";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { saveApplier, updateApplier } from "../../api/appliers";
@@ -49,6 +50,13 @@ export const FormApplier = () => {
       <ListAppliers />
       <PopUp onClose={() => navigate(routes_constraints.APPLIER)}>
         <form className="form-applier">
+          <button
+            type="button"
+            className="close-button"
+            onClick={() => navigate(routes_constraints.APPLIER)}
+          >
+            <BiX />
+          </button>
           <p>
             <label>Nome do entrevistador:</label>
             <input
