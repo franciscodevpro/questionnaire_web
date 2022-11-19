@@ -3,6 +3,7 @@ export type QuestionnaireDataRequestType = {
   lat: string;
   lon: string;
   duration: number;
+  createdAt: string;
 };
 
 export type QuestionnaireDataRequestResultType = {
@@ -14,6 +15,7 @@ export type QuestionnaireDataRequestResultType = {
   lat: string;
   lon: string;
   duration: number;
+  createdAt: string;
 };
 
 export type QuestionnaireDataResponseType = {
@@ -32,4 +34,5 @@ export type QuestionnaireDataResponseType = {
   lat: string;
   lon: string;
   duration: number;
+  createdAt: string;
 };
