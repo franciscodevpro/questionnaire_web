@@ -1,0 +1,41 @@
+.main > main {
+    padding: 0 24px;
+}
+
+.dashboard-container {
+    display: flex;
+    width: 100%;
+}
+
+.dashboard-container > *::-webkit-scrollbar {
+    display: none;
+  }
+.dashboard-container > * {
+    max-height: calc(100vh - 70px);
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 32px 0;
+    box-sizing: border-box;
+}
+
+.dashboard-container > section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 2;
+    margin-right: 32px;
+    box-sizing: border-box;
+}
+.dashboard-container ul {
+    flex: 1;
+    height: 100%;
+    padding-left: 0;
+}
+.dashboard-container ul li {
+    list-style: none;
+    border: 1px solid;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}

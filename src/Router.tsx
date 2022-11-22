@@ -4,6 +4,7 @@ import { findAllAppliers } from "./api/appliers";
 import { findAllDevices } from "./api/devices";
 import { findAllQuestionnaire } from "./api/questionnaire";
 import { MainContextProvider } from "./contexts/questionnaire-context";
+import { Dashboard } from "./pages/Dashboard";
 import { FormApplier } from "./pages/FormApplier";
 import { FormDevice } from "./pages/FormDevice";
 import { FormQuestionnaire } from "./pages/FormQuestionnaire";
@@ -83,6 +84,10 @@ export const Router = () => {
             <Route
               path={routes_constraints.QUESTIONNAIRE_CREATE}
               element={goIfLoggedIn(<FormQuestionnaire />)}
+            />
+            <Route
+              path={routes_constraints.QUESTIONNAIRE_DASHBOARD}
+              element={goIfLoggedIn(<Dashboard />)}
             />
             <Route
               path={routes_constraints.QUESTIONNAIRE_ID}

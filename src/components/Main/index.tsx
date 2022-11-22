@@ -31,7 +31,7 @@ export const Main = ({ children, title }: MainProps) => {
               items={questionnaires.map((elm) => ({
                 value: elm.name,
                 id: elm.id,
-                link: routes_helpers.mountQuestionnaireId(elm.id),
+                link: routes_helpers.mountQuestionnaireDashboard(elm.id),
               }))}
               titleLink={routes_constraints.QUESTIONNAIRE}
             />
