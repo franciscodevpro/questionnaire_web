@@ -1,5 +1,7 @@
+import { Chart as ChartJS } from "chart.js/auto";
 import _ from "lodash";
 import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useParams } from "react-router-dom";
 import { getSpecificQuestionnaire } from "../../api/questionnaire";
@@ -10,6 +12,17 @@ import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
 import { QuestionnaireDataResponseType } from "../../types/questionnaireData";
 import "./styles.css";
+const chartJS = ChartJS;
+
+const parseDateTime = (date: string) => {
+  return new Date(new Date(date).toLocaleString());
+};
+
+const formatDate = (date: Date) => {
+  return `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+};
 
 export const Dashboard = () => {
   const { id } = useParams();
@@ -49,6 +62,51 @@ export const Dashboard = () => {
     { data: "", autor: "" },
     { data: "", autor: "" },
   ]);
+  const [chartByDay, setChartByDay] = useState<{
+    labels: string[];
+    data: (string | number)[];
+  }>({ labels: [], data: [] });
+  const [chartByHour, setChartByHour] = useState<{
+    labels: (string | number)[];
+    data: (string | number)[];
+  }>({ labels: [], data: [] });
+
+  const populateChartByHourData = (
+    questionnaireDataResult: QuestionnaireDataResponseType[]
+  ) => {
+    setChartByHour({ labels: [], data: [] });
+    if (!questionnaireDataResult?.[0]) return;
+    const questionnairesByHour = _.groupBy(questionnaireDataResult, (elm) =>
+      parseDateTime(elm.createdAt).getHours()
+    );
+    const labels = Array.from({ length: 24 }).map((_, k) => k);
+    const data = labels.map((elm) => questionnairesByHour[elm]?.length);
+
+    setChartByHour({
+      labels,
+      data,
+    });
+  };
+
+  const populateChartByDayData = (
+    questionnaireDataResult: QuestionnaireDataResponseType[]
+  ) => {
+    setChartByDay({ labels: [], data: [] });
+    if (!questionnaireDataResult?.[0]) return;
+    const questionnairesByDay = _.groupBy(
+      questionnaireDataResult,
+      (elm) => parseDateTime(elm.createdAt).toLocaleString().split(",")[0]
+    );
+    const labels = Object.keys(questionnairesByDay);
+    const data = labels.map((elm) => questionnairesByDay[elm].length);
+
+    setChartByDay({
+      labels: labels
+        .filter((_, key) => key < 7)
+        .map((elm) => elm.replace(/(\w+)\W(\w+)\W(\w+)/i, "$2/$1/$3")),
+      data: data.filter((_, key) => key < 7),
+    });
+  };
 
   const populateLastQuestionnaire = (
     questionnaireDataResult: QuestionnaireDataResponseType[]
@@ -66,14 +124,10 @@ export const Dashboard = () => {
     const resultData = lastQuestionnairesData
       .filter((_, key) => key < 3)
       .map((elm) => {
-        const lastQuestionnaireDate = new Date(
-          new Date(elm.createdAt).toISOString()
-        );
+        const lastQuestionnaireDate = parseDateTime(elm.createdAt);
         return {
           autor: elm.applier.name,
-          data: `${lastQuestionnaireDate.getDate()}/${
-            lastQuestionnaireDate.getMonth() + 1
-          }/${lastQuestionnaireDate.getFullYear()} ${lastQuestionnaireDate.getHours()}:${lastQuestionnaireDate.getMinutes()}`,
+          data: formatDate(lastQuestionnaireDate),
         };
       });
     setLastQuestionnaires(resultData);
@@ -85,7 +139,10 @@ export const Dashboard = () => {
     setGeneralStats(["", "", ""]);
     if (!questionnaireDataResult?.[0]) return;
     const total = questionnaireDataResult.length;
-    const questionnairesByDay = _.groupBy(questionnaireDataResult, "createdAt");
+    const questionnairesByDay = _.groupBy(
+      questionnaireDataResult,
+      (elm) => elm.createdAt.split("T")[0]
+    );
     const questionnairesByDayKeys = Object.keys(questionnairesByDay);
     const statsByDay =
       questionnairesByDayKeys
@@ -116,10 +173,11 @@ export const Dashboard = () => {
     let resultData: any = [];
     const appliersTotal = _.groupBy(questionnaireDataResult, "applier.name");
     const applierNames = Object.keys(appliersTotal);
+
     resultData = applierNames.map((applierName) => {
       const questionnairesByDay = _.groupBy(
         appliersTotal[applierName],
-        "createdAt"
+        (elm) => elm.createdAt.split("T")[0]
       );
       const questionnairesByDayKeys = Object.keys(questionnairesByDay);
       const statsByDay =
@@ -127,14 +185,13 @@ export const Dashboard = () => {
           .map((elm) => questionnairesByDay[elm].length)
           .reduce((prev, current) => prev + current) /
         questionnairesByDayKeys.length;
+
       const lastQuestionnaire = _.orderBy(
         appliersTotal[applierName],
         "createdAt",
         "desc"
       )[0].createdAt;
-      const lastQuestionnaireDate = new Date(
-        new Date(lastQuestionnaire).toISOString()
-      );
+      const lastQuestionnaireDate = parseDateTime(lastQuestionnaire);
       return {
         autor: applierName,
         total: appliersTotal[applierName].length,
@@ -144,11 +201,7 @@ export const Dashboard = () => {
             .map((elm) => elm.duration)
             .reduce((prev, current) => prev + current) /
           appliersTotal[applierName].length,
-        "última coleta":
-          lastQuestionnaire &&
-          `${lastQuestionnaireDate.getDate()}/${
-            lastQuestionnaireDate.getMonth() + 1
-          }/${lastQuestionnaireDate.getFullYear()} ${lastQuestionnaireDate.getHours()}:${lastQuestionnaireDate.getMinutes()}`,
+        "última coleta": lastQuestionnaire && formatDate(lastQuestionnaireDate),
       };
     });
     setAppliersStats(resultData);
@@ -163,6 +216,8 @@ export const Dashboard = () => {
     populateAppliersData(questionnaireDataResult);
     populateGeneralData(questionnaireDataResult);
     populateLastQuestionnaire(questionnaireDataResult);
+    populateChartByDayData(questionnaireDataResult);
+    populateChartByHourData(questionnaireDataResult);
 
     const responseWithCoord = questionnaireDataResult?.find(
       (elm) => !!elm.lat && !!elm.lon
@@ -191,7 +246,7 @@ export const Dashboard = () => {
                 borderRadius: 16,
                 overflow: "hidden",
                 resize: "both",
-                marginBottom: 24,
+                marginBottom: 96,
               }}
             >
               <MapContainer
@@ -231,6 +286,7 @@ export const Dashboard = () => {
               width: "100%",
               boxSizing: "border-box",
               padding: 10,
+              gap: 16,
             }}
           >
             {generalStats && (
@@ -246,7 +302,9 @@ export const Dashboard = () => {
                   { "-": "Média por dia", "Performce geral": generalStats[1] },
                   { "-": "Tempo médio", "Performce geral": generalStats[2] },
                 ]}
-                style={{ display: "inline" }}
+                style={{
+                  flex: 1,
+                }}
               />
             )}
 
@@ -255,7 +313,9 @@ export const Dashboard = () => {
                 title={"Últimas coletas recebidas"}
                 columns={["autor", "data"]}
                 data={lastQuestionnaires}
-                style={{ display: "inline" }}
+                style={{
+                  flex: 1,
+                }}
               />
             )}
           </div>
@@ -273,6 +333,70 @@ export const Dashboard = () => {
               style={{ width: "calc(100% - 16px)" }}
             />
           )}
+
+          <Bar
+            style={{ marginTop: 96 }}
+            data={{
+              labels: chartByDay.labels,
+              datasets: [
+                {
+                  label: "Questionários por dia",
+                  data: chartByDay.data,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                    "rgba(255, 205, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(201, 203, 207, 0.2)",
+                  ],
+                  borderColor: [
+                    "rgb(255, 99, 132)",
+                    "rgb(255, 159, 64)",
+                    "rgb(255, 205, 86)",
+                    "rgb(75, 192, 192)",
+                    "rgb(54, 162, 235)",
+                    "rgb(153, 102, 255)",
+                    "rgb(201, 203, 207)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            }}
+          />
+
+          <Bar
+            style={{ marginTop: 96 }}
+            data={{
+              labels: chartByHour.labels,
+              datasets: [
+                {
+                  label: "Questionários por hora",
+                  data: chartByHour.data,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                    "rgba(255, 205, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(201, 203, 207, 0.2)",
+                  ],
+                  borderColor: [
+                    "rgb(255, 99, 132)",
+                    "rgb(255, 159, 64)",
+                    "rgb(255, 205, 86)",
+                    "rgb(75, 192, 192)",
+                    "rgb(54, 162, 235)",
+                    "rgb(153, 102, 255)",
+                    "rgb(201, 203, 207)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            }}
+          />
         </section>
         <ul>
           {questionnaire?.questions.map((question) => (
