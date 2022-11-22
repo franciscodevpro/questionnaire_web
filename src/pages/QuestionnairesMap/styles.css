@@ -1,0 +1,11 @@
+.main > main {
+    padding: 0 16px;
+}
+
+.map-container {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 70px);
+    max-height: 100%;
+    background-color: #ccc;
+}

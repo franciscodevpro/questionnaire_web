@@ -12,6 +12,7 @@ import { ListAppliers } from "./pages/ListAppliers";
 import { ListDevices } from "./pages/ListDevices";
 import { ListQuestionnaires } from "./pages/ListQuestionnaires";
 import Login from "./pages/Login";
+import { QuestionnairesMap } from "./pages/QuestionnairesMap";
 import { ApplierRequestResultType } from "./types/applier";
 import { DeviceRequestResultType } from "./types/device";
 import { QuestionnaireRequestResultType } from "./types/questionnaire";
@@ -88,6 +89,10 @@ export const Router = () => {
             <Route
               path={routes_constraints.QUESTIONNAIRE_DASHBOARD}
               element={goIfLoggedIn(<Dashboard />)}
+            />
+            <Route
+              path={routes_constraints.QUESTIONNAIRE_MAP}
+              element={goIfLoggedIn(<QuestionnairesMap />)}
             />
             <Route
               path={routes_constraints.QUESTIONNAIRE_ID}
