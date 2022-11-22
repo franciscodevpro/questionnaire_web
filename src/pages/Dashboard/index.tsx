@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getSpecificQuestionnaire } from "../../api/questionnaire";
 import { findAllQuestionnaireData } from "../../api/questionnaireData";
 import { Main } from "../../components/Main";
@@ -11,6 +11,7 @@ import { Table } from "../../components/Table";
 import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
 import { QuestionnaireDataResponseType } from "../../types/questionnaireData";
+import { routes_helpers } from "../../util/route_utils";
 import "./styles.css";
 const chartJS = ChartJS;
 
@@ -238,46 +239,60 @@ export const Dashboard = () => {
       <section className="dashboard-container">
         <section>
           {center && (
-            <div
-              style={{
-                minHeight: 300,
-                width: 600,
-                maxWidth: "100%",
-                borderRadius: 16,
-                overflow: "hidden",
-                resize: "both",
-                marginBottom: 96,
-              }}
-            >
-              <MapContainer
-                center={center}
-                zoom={13}
-                scrollWheelZoom={true}
+            <>
+              <div
                 style={{
-                  height: "100%",
-                  width: "100%",
+                  minHeight: 300,
+                  width: 600,
+                  maxWidth: "100%",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  resize: "both",
                 }}
               >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {questionnaireData
-                  ?.filter((element) => !!element.lat && !!element.lon)
-                  .map((elm) => (
-                    <Marker
-                      position={[parseFloat(elm.lat), parseFloat(elm.lon)]}
-                      key={elm.id}
-                    >
-                      <Popup>
-                        <strong>{elm.id}</strong>
-                        <p>{elm.applier.name}</p>
-                        <span>aparelho: {elm.device.name}</span>
-                      </Popup>
-                    </Marker>
-                  ))}
-              </MapContainer>
-            </div>
+                <MapContainer
+                  center={center}
+                  zoom={13}
+                  scrollWheelZoom={true}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  {questionnaireData
+                    ?.filter((element) => !!element.lat && !!element.lon)
+                    .map((elm) => (
+                      <Marker
+                        position={[parseFloat(elm.lat), parseFloat(elm.lon)]}
+                        key={elm.id}
+                      >
+                        <Popup>
+                          <strong>{elm.id}</strong>
+                          <p>{elm.applier.name}</p>
+                          <span>aparelho: {elm.device.name}</span>
+                        </Popup>
+                      </Marker>
+                    ))}
+                </MapContainer>
+              </div>
+              {!!id && (
+                <Link
+                  to={routes_helpers.mountQuestionnaireMap(id)}
+                  style={{
+                    padding: 8,
+                    marginTop: 8,
+                    border: "1px solid #ccc",
+                    borderRadius: 4,
+                  }}
+                >
+                  Abrir o mapa
+                </Link>
+              )}
+            </>
           )}
           <div
             style={{
@@ -287,6 +302,7 @@ export const Dashboard = () => {
               boxSizing: "border-box",
               padding: 10,
               gap: 16,
+              marginTop: 96,
             }}
           >
             {generalStats && (
