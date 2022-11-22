@@ -4,6 +4,7 @@ export const routes_constraints = {
   QUESTIONNAIRE_ID: "/questionnaires/:id",
   QUESTIONNAIRE_CREATE: "/questionnaires/create",
   QUESTIONNAIRE_DASHBOARD: "/questionnaires/:id/dashboard",
+  QUESTIONNAIRE_MAP: "/questionnaires/:id/map",
   QUESTIONNAIRE_DATA: "/questionnaire_data",
   QUESTIONNAIRE_DATA_ID: "/questionnaire_data/:id",
   QUESTION: "/questions",
@@ -25,6 +26,8 @@ export const routes_helpers = {
     routes_constraints.QUESTIONNAIRE_ID.replace(":id", id),
   mountQuestionnaireDashboard: (id: string) =>
     routes_constraints.QUESTIONNAIRE_DASHBOARD.replace(":id", id),
+  mountQuestionnaireMap: (id: string) =>
+    routes_constraints.QUESTIONNAIRE_MAP.replace(":id", id),
   mountQuestionIdQuestionnaire: (idQuestionnaire: string) =>
     `${routes_constraints.QUESTION}?idQuestionnaire=${idQuestionnaire}`,
   mountQuestionnaireDataIdQuestionnaire: (idQuestionnaire: string) =>
