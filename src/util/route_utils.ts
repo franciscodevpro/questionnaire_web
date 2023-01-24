@@ -19,6 +19,7 @@ export const routes_constraints = {
   DEVICE: "/devices",
   DEVICE_ID: "/devices/:id",
   DEVICE_CREATE: "/devices/create",
+  REPORTS_QUESTIONNAIRE_DATA: "/reports/questionnaire_data/:id",
 };
 
 export const routes_helpers = {
@@ -44,4 +45,6 @@ export const routes_helpers = {
     routes_constraints.APPLIER_ID.replace(":id", id),
   mountDeviceId: (id: string) =>
     routes_constraints.DEVICE_ID.replace(":id", id),
+  mountReportsQuestionnaireData: (id: string) =>
+    routes_constraints.REPORTS_QUESTIONNAIRE_DATA.replace(":id", id),
 };
