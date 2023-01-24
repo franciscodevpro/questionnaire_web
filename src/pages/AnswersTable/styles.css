@@ -1,0 +1,31 @@
+.main > main {
+    padding: 0 16px;
+    background-color: #eee;
+}
+
+.reports-questionnaire-data {
+    width: 100%;
+    overflow-x: auto;
+}
+table {
+    border-collapse: collapse;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    background-color: #fff;
+    margin: 15px;
+    border: 1px solid #fff;
+}
+table thead th {
+    text-align: left;
+    color: #999;
+    padding: 16px;
+}
+table td, table th {
+    border-bottom: 1px solid #eee;
+    border-left: 1px solid #eee;
+    white-space: nowrap;
+    text-align: center;
+    padding: 8px 16px;
+    color: #777;
+}
