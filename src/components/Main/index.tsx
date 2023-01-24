@@ -62,6 +62,20 @@ export const Main = ({ children, title }: MainProps) => {
               titleLink={routes_constraints.APPLIER}
             />
           </li>
+          <li>
+            <MenuItem
+              id={"4"}
+              icon={<FiUser size={20} />}
+              title={{ value: "Relatórios" }}
+              items={[
+                {
+                  value: "Todas as respostas",
+                  id: Date.now().toString(),
+                  link: routes_constraints.REPORTS_QUESTIONNAIRE_DATA_SELECT,
+                },
+              ]}
+            />
+          </li>
         </ul>
         <details>
           <section>

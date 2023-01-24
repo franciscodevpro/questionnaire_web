@@ -20,6 +20,7 @@ export const routes_constraints = {
   DEVICE_ID: "/devices/:id",
   DEVICE_CREATE: "/devices/create",
   REPORTS_QUESTIONNAIRE_DATA: "/reports/questionnaire_data/:id",
+  REPORTS_QUESTIONNAIRE_DATA_SELECT: "/reports/questionnaire_data",
 };
 
 export const routes_helpers = {

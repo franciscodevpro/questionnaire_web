@@ -124,6 +124,10 @@ export const Router = () => {
               element={goIfLoggedIn(<FormDevice />)}
             />
             <Route
+              path={routes_constraints.REPORTS_QUESTIONNAIRE_DATA_SELECT}
+              element={goIfLoggedIn(<AnswersTable />)}
+            />
+            <Route
               path={routes_constraints.REPORTS_QUESTIONNAIRE_DATA}
               element={goIfLoggedIn(<AnswersTable />)}
             />
