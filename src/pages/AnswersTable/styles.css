@@ -3,6 +3,8 @@
     overflow-x: auto;
     margin: 0;
     background-color: #eee;
+    padding: 15PX;
+    box-sizing: border-box;
 }
 table {
     border-collapse: collapse;
@@ -10,8 +12,8 @@ table {
     overflow: hidden;
     position: relative;
     background-color: #fff;
-    margin: 15px;
     border: 1px solid #fff;
+    margin: 15px auto;
 }
 table thead th {
     text-align: left;
