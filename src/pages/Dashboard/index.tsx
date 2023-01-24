@@ -238,6 +238,25 @@ export const Dashboard = () => {
     <Main title="Dashboard">
       <section className="dashboard-container">
         <section>
+          {id && (
+            <Link
+              to={routes_helpers.mountReportsQuestionnaireData(id)}
+              style={{
+                padding: 10,
+                marginBottom: 16,
+                border: 0,
+                borderRadius: 4,
+                textDecoration: "none",
+                backgroundColor: "#1105FF",
+                color: "#fff",
+                fontWeight: "bold",
+                paddingLeft: 15,
+                paddingRight: 15,
+              }}
+            >
+              Ver todas as respostas
+            </Link>
+          )}
           {center && (
             <>
               <div
