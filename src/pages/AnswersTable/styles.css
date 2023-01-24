@@ -1,11 +1,8 @@
-.main > main {
-    padding: 0 16px;
-    background-color: #eee;
-}
-
-.reports-questionnaire-data {
+.main > main .reports-questionnaire-data {
     width: 100%;
     overflow-x: auto;
+    margin: 0;
+    background-color: #eee;
 }
 table {
     border-collapse: collapse;

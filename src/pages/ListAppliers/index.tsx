@@ -28,40 +28,42 @@ export const ListAppliers = ({}: ListAppliersProps) => {
 
   return (
     <Main title="Entrevistadores">
-      <h1 className="questionarios-title">Todos ativos</h1>
-      <ul className="questionarios-list">
-        {appliers?.map((appliers) => (
-          <li key={appliers.id}>
-            <Link to={routes_helpers.mountApplierId(appliers.id)}>
-              <p>{appliers.name}</p>
-            </Link>
-            <section className="buttons-section">
-              <button
-                type="button"
-                className="update"
-                onClick={() =>
-                  navigate(routes_helpers.mountApplierId(appliers.id))
-                }
-              >
-                Atualizar
-              </button>
-              <button
-                type="button"
-                className="remove"
-                onClick={() => handleDeleteApplier(appliers.id)}
-              >
-                Excluir
-              </button>
-            </section>
-          </li>
-        ))}
-      </ul>
-      <button
-        className="add"
-        onClick={() => navigate(routes_constraints.APPLIER_CREATE)}
-      >
-        +
-      </button>
+      <section className="questionnaires-container">
+        <h1 className="questionarios-title">Todos ativos</h1>
+        <ul className="questionarios-list">
+          {appliers?.map((appliers) => (
+            <li key={appliers.id}>
+              <Link to={routes_helpers.mountApplierId(appliers.id)}>
+                <p>{appliers.name}</p>
+              </Link>
+              <section className="buttons-section">
+                <button
+                  type="button"
+                  className="update"
+                  onClick={() =>
+                    navigate(routes_helpers.mountApplierId(appliers.id))
+                  }
+                >
+                  Atualizar
+                </button>
+                <button
+                  type="button"
+                  className="remove"
+                  onClick={() => handleDeleteApplier(appliers.id)}
+                >
+                  Excluir
+                </button>
+              </section>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="add"
+          onClick={() => navigate(routes_constraints.APPLIER_CREATE)}
+        >
+          +
+        </button>
+      </section>
     </Main>
   );
 };

@@ -28,40 +28,42 @@ export const ListDevices = ({}: ListDevicesProps) => {
 
   return (
     <Main title="Aparelhos">
-      <h1 className="devices-title">Todos ativos</h1>
-      <ul className="devices-list">
-        {devices?.map((devices) => (
-          <li key={devices.id}>
-            <Link to={routes_helpers.mountDeviceId(devices.id)}>
-              <p>{devices.name}</p>
-            </Link>
-            <section className="buttons-section">
-              <button
-                type="button"
-                className="update"
-                onClick={() =>
-                  navigate(routes_helpers.mountDeviceId(devices.id))
-                }
-              >
-                Atualizar
-              </button>
-              <button
-                type="button"
-                className="remove"
-                onClick={() => handleDeleteDevice(devices.id)}
-              >
-                Excluir
-              </button>
-            </section>
-          </li>
-        ))}
-      </ul>
-      <button
-        className="add"
-        onClick={() => navigate(routes_constraints.DEVICE_CREATE)}
-      >
-        +
-      </button>
+      <section className="questionnaires-container">
+        <h1 className="questionarios-title">Todos ativos</h1>
+        <ul className="questionarios-list">
+          {devices?.map((devices) => (
+            <li key={devices.id}>
+              <Link to={routes_helpers.mountDeviceId(devices.id)}>
+                <p>{devices.name}</p>
+              </Link>
+              <section className="buttons-section">
+                <button
+                  type="button"
+                  className="update"
+                  onClick={() =>
+                    navigate(routes_helpers.mountDeviceId(devices.id))
+                  }
+                >
+                  Atualizar
+                </button>
+                <button
+                  type="button"
+                  className="remove"
+                  onClick={() => handleDeleteDevice(devices.id)}
+                >
+                  Excluir
+                </button>
+              </section>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="add"
+          onClick={() => navigate(routes_constraints.DEVICE_CREATE)}
+        >
+          +
+        </button>
+      </section>
     </Main>
   );
 };

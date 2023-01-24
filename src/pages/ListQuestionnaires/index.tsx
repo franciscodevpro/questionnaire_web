@@ -28,47 +28,51 @@ export const ListQuestionnaires = ({}: ListQuestionnairesProps) => {
 
   return (
     <Main title="Questionários">
-      <h1 className="questionarios-title">Todos ativos</h1>
-      <ul className="questionarios-list">
-        {questionnaires?.map((questionnaire) => (
-          <li key={questionnaire.id}>
-            <Link
-              to={routes_helpers.mountQuestionnaireDashboard(questionnaire.id)}
-            >
-              <p>{questionnaire.name}</p>
-            </Link>
-            <section className="buttons-section">
-              <button type="button" className="clone">
-                Duplicar
-              </button>
-              <button
-                type="button"
-                className="update"
-                onClick={() =>
-                  navigate(
-                    routes_helpers.mountQuestionnaireId(questionnaire.id)
-                  )
-                }
+      <div className="questionnaires-container">
+        <h1 className="questionarios-title">Todos ativos</h1>
+        <ul className="questionarios-list">
+          {questionnaires?.map((questionnaire) => (
+            <li key={questionnaire.id}>
+              <Link
+                to={routes_helpers.mountQuestionnaireDashboard(
+                  questionnaire.id
+                )}
               >
-                Atualizar
-              </button>
-              <button
-                type="button"
-                className="remove"
-                onClick={() => handleDeleteQuestionnaire(questionnaire.id)}
-              >
-                Excluir
-              </button>
-            </section>
-          </li>
-        ))}
-      </ul>
-      <button
-        className="add"
-        onClick={() => navigate(routes_constraints.QUESTIONNAIRE_CREATE)}
-      >
-        +
-      </button>
+                <p>{questionnaire.name}</p>
+              </Link>
+              <section className="buttons-section">
+                <button type="button" className="clone">
+                  Duplicar
+                </button>
+                <button
+                  type="button"
+                  className="update"
+                  onClick={() =>
+                    navigate(
+                      routes_helpers.mountQuestionnaireId(questionnaire.id)
+                    )
+                  }
+                >
+                  Atualizar
+                </button>
+                <button
+                  type="button"
+                  className="remove"
+                  onClick={() => handleDeleteQuestionnaire(questionnaire.id)}
+                >
+                  Excluir
+                </button>
+              </section>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="add"
+          onClick={() => navigate(routes_constraints.QUESTIONNAIRE_CREATE)}
+        >
+          +
+        </button>
+      </div>
     </Main>
   );
 };

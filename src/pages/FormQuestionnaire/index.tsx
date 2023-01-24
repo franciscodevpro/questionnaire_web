@@ -371,118 +371,120 @@ export const FormQuestionnaire = ({
   }, [id]);
   return (
     <Main title="Questionário - salvar">
-      <div className="main-button">
-        <button
-          className="save-questionnaire"
-          onClick={handleSaveQuestionnaire}
-        >
-          Salvar questionário
-        </button>
-      </div>
-      <form className="questionnaire-form">
-        <p className="name">
-          <label htmlFor="name">Nome:</label>
-          <input
-            type="text"
-            name="name"
-            defaultValue={data?.name}
-            onChange={(evt) => changeDataValue("name", evt.target.value)}
-          />
-        </p>
-        <p className="quantity">
-          <label htmlFor="quantity">Quantidade limite:</label>
-          <input
-            type="number"
-            name="quantity"
-            defaultValue={data?.quantity}
-            onChange={(evt) => changeDataValue("quantity", evt.target.value)}
-          />
-        </p>
-        <p className="endDate">
-          <label htmlFor="endDate">Data de término:</label>
-          <input
-            type="text"
-            name="endDate"
-            defaultValue={data?.endDate}
-            onChange={(evt) => changeDataValue("endDate", evt.target.value)}
-          />
-        </p>
-        <p className="exceedsQuantity checkbox-item">
-          <label htmlFor="exceedsQuantity">Exeder limite</label>
-          <input
-            type="checkbox"
-            name="exceedsQuantity"
-            value="true"
-            checked={data?.exceedsQuantity}
-            onChange={(evt) =>
-              changeDataValue("exceedsQuantity", evt.target.checked)
-            }
-          />
-        </p>
-        <p className="canBeOnline checkbox-item">
-          <label htmlFor="canBeOnline">Pode ser respondido online</label>
-          <input
-            type="checkbox"
-            name="canBeOnline"
-            value="true"
-            checked={!!data?.canBeOnline}
-            onChange={(evt) =>
-              changeDataValue("canBeOnline", evt.target.checked)
-            }
-          />
-        </p>
-        <fieldset className="appliers-section">
-          <legend>Entrevistadores</legend>
-          <>
-            {appliers?.map?.((applier) => (
-              <p className="appliers checkbox-item" key={applier.id}>
-                <label htmlFor="appliers">{applier.name}</label>
-                <input
-                  type="checkbox"
-                  name="appliers"
-                  value={applier.id}
-                  checked={
-                    !!data?.appliers.find((appl) => appl.id === applier.id)
-                  }
-                  onChange={(evt) =>
-                    changeAppliers(
-                      { id: applier.id, name: applier.name },
-                      evt.target.checked
-                    )
-                  }
-                />
-              </p>
-            ))}
-          </>
-        </fieldset>
-        <fieldset className="questions-section">
-          <legend>Perguntas</legend>
-          {data?.questions?.map?.((question) => (
-            <Question
-              {...question}
-              key={question.id}
-              onClickInRemove={() => removeQuestion(question.id)}
-              onRemoveAnswerOption={(id) => removeAnswerOption(id)}
-              onChangeValue={(question) => {
-                setData({
-                  ...data,
-                  questions: data.questions.map((quest) => {
-                    if (
-                      quest.id === question.id ||
-                      "update:" + quest.id === question.id
-                    )
-                      return question;
-                    return quest;
-                  }),
-                });
-              }}
+      <section>
+        <div className="main-button">
+          <button
+            className="save-questionnaire"
+            onClick={handleSaveQuestionnaire}
+          >
+            Salvar questionário
+          </button>
+        </div>
+        <form className="questionnaire-form">
+          <p className="name">
+            <label htmlFor="name">Nome:</label>
+            <input
+              type="text"
+              name="name"
+              defaultValue={data?.name}
+              onChange={(evt) => changeDataValue("name", evt.target.value)}
             />
-          ))}
-        </fieldset>
-      </form>
-      <button className="add" onClick={() => addQuestion()}>
-        +
-      </button>
+          </p>
+          <p className="quantity">
+            <label htmlFor="quantity">Quantidade limite:</label>
+            <input
+              type="number"
+              name="quantity"
+              defaultValue={data?.quantity}
+              onChange={(evt) => changeDataValue("quantity", evt.target.value)}
+            />
+          </p>
+          <p className="endDate">
+            <label htmlFor="endDate">Data de término:</label>
+            <input
+              type="text"
+              name="endDate"
+              defaultValue={data?.endDate}
+              onChange={(evt) => changeDataValue("endDate", evt.target.value)}
+            />
+          </p>
+          <p className="exceedsQuantity checkbox-item">
+            <label htmlFor="exceedsQuantity">Exeder limite</label>
+            <input
+              type="checkbox"
+              name="exceedsQuantity"
+              value="true"
+              checked={data?.exceedsQuantity}
+              onChange={(evt) =>
+                changeDataValue("exceedsQuantity", evt.target.checked)
+              }
+            />
+          </p>
+          <p className="canBeOnline checkbox-item">
+            <label htmlFor="canBeOnline">Pode ser respondido online</label>
+            <input
+              type="checkbox"
+              name="canBeOnline"
+              value="true"
+              checked={!!data?.canBeOnline}
+              onChange={(evt) =>
+                changeDataValue("canBeOnline", evt.target.checked)
+              }
+            />
+          </p>
+          <fieldset className="appliers-section">
+            <legend>Entrevistadores</legend>
+            <>
+              {appliers?.map?.((applier) => (
+                <p className="appliers checkbox-item" key={applier.id}>
+                  <label htmlFor="appliers">{applier.name}</label>
+                  <input
+                    type="checkbox"
+                    name="appliers"
+                    value={applier.id}
+                    checked={
+                      !!data?.appliers.find((appl) => appl.id === applier.id)
+                    }
+                    onChange={(evt) =>
+                      changeAppliers(
+                        { id: applier.id, name: applier.name },
+                        evt.target.checked
+                      )
+                    }
+                  />
+                </p>
+              ))}
+            </>
+          </fieldset>
+          <fieldset className="questions-section">
+            <legend>Perguntas</legend>
+            {data?.questions?.map?.((question) => (
+              <Question
+                {...question}
+                key={question.id}
+                onClickInRemove={() => removeQuestion(question.id)}
+                onRemoveAnswerOption={(id) => removeAnswerOption(id)}
+                onChangeValue={(question) => {
+                  setData({
+                    ...data,
+                    questions: data.questions.map((quest) => {
+                      if (
+                        quest.id === question.id ||
+                        "update:" + quest.id === question.id
+                      )
+                        return question;
+                      return quest;
+                    }),
+                  });
+                }}
+              />
+            ))}
+          </fieldset>
+        </form>
+        <button className="add" onClick={() => addQuestion()}>
+          +
+        </button>
+      </section>
     </Main>
   );
 };
