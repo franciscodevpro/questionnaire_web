@@ -10,7 +10,13 @@ export const doLogin = async ({
   login,
   password,
 }: LoginType): Promise<void> => {
-  const result = await api.post("/login", { login, password });
+  let result = null;
+  try {
+    result = await api.post("/login", { login, password });
+  } catch (err) {
+    result = null;
+    console.log(err);
+  }
   if (!result?.data?.token)
     return errorMessagePopup(
       "Erro ao tentar efetuar login. Verifique o login e senha e tente novemante"
