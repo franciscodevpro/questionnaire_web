@@ -1,9 +1,10 @@
 import { BiX } from "@react-icons/all-files/bi/BiX";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getReportsQuestionnaireData } from "../../api/reports_questionnaireData";
 import { Main } from "../../components/Main";
 import { PopUp } from "../../components/PopUp";
+import MainContext from "../../contexts/questionnaire-context";
 import { AnswerResponseType } from "../../types/answer";
 import { QuestionResponseType } from "../../types/question";
 import { QuestionnaireResponseType } from "../../types/questionnaire";
@@ -14,6 +15,7 @@ import "./styles.css";
 export const AnswersTable = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { questionnaires } = useContext(MainContext);
   const [reportsQuestionnaireData, setReportsQuestionnaireData] = useState<{
     questionnaire: QuestionnaireResponseType;
     questionnaireData: (QuestionnaireDataResponseType & {
@@ -85,15 +87,40 @@ export const AnswersTable = () => {
               </button>
               <p>
                 <label>Escolha o questionário:</label>
-                <details>
-                  <summary style={{ cursor: "pointer" }}>Questionários</summary>
-                  <Link
-                    to={routes_helpers.mountReportsQuestionnaireData(
-                      "f0fd89fd-305b-476a-9022-243570b0ea5b"
-                    )}
-                  >
-                    <option value="">Eleições para senador</option>
-                  </Link>
+                <details className="questionnaireSelect">
+                  <summary style={{ cursor: "pointer" }}>
+                    <span>Questionários</span>
+
+                    <div className="summary-chevron-up">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="feather feather-chevron-down"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                  </summary>
+                  <section className="questionnaireSelectContent">
+                    {questionnaires.map((questionnaire) => (
+                      <Link
+                        to={routes_helpers.mountReportsQuestionnaireData(
+                          questionnaire.id
+                        )}
+                      >
+                        <p className="questionnaireSelectItem">
+                          {questionnaire.name}
+                        </p>
+                      </Link>
+                    ))}
+                  </section>
                 </details>
               </p>
             </form>

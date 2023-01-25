@@ -28,3 +28,41 @@ table td, table th {
     padding: 8px 16px;
     color: #777;
 }
+
+.questionnaireSelect {
+    list-style: none;
+}
+.questionnaireSelect summary {
+    padding: 10px 5px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+}
+
+.questionnaireSelect summary .summary-chevron-up {
+    transition: .3s ease-out;
+    transform: rotateZ(-90deg) translateX(2px);
+}
+
+.questionnaireSelect[open] summary .summary-chevron-up {
+    transition: .3s ease-in;
+    transform: rotateZ(0deg) translateX(0);
+}
+
+.questionnaireSelect .questionnaireSelectItem {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px 15px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-weight: normal;
+}
+.questionnaireSelect .questionnaireSelectItem:hover {
+    background-color: #ccc;
+}
+
+.questionnaireSelectContent {
+    max-height: 130px;
+    overflow-x: auto;
+    background-color: #f9f9f9;
+}
