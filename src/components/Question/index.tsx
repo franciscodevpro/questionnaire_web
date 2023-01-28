@@ -73,9 +73,11 @@ export const Question = ({
       onChangeValue?.(questinData);
     };
 
-  const createNewAnswerOption = (evt: any) => {
-    const value = evt?.target?.value;
-    if (!value) return;
+  const createNewAnswerOption = () => {
+    console.log("Testando...");
+    const value = questinData?.answerOptions?.[0]
+      ? questinData.answerOptions.slice(-1)[0].title
+      : "";
     const newQuestionData = { ...questinData };
     newQuestionData.answerOptions?.push({
       id: `new:${crypto.randomUUID()}`,
@@ -177,13 +179,21 @@ export const Question = ({
               </button>
             </p>
           ))}
-          <p className="answerOptions">
-            <input
-              type="text"
-              name="answerOptions"
-              onBlur={createNewAnswerOption}
-            />
-          </p>
+          <button
+            type="button"
+            onClick={createNewAnswerOption}
+            style={{
+              backgroundColor: "#3d9",
+              border: "none",
+              color: "#fff",
+              padding: 3,
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              borderRadius: 5,
+            }}
+          >
+            +
+          </button>
         </section>
       )}
       <div className="buttons">

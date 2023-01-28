@@ -70,10 +70,11 @@
 }
 .questionnaire-form .buttons .remove {
     display: inline-block;
-    background-color: #F77;
+    background-color: #f83461;
+    color: #fff;
     align-self: center;
     justify-self: center;
     padding: 8px 16px;
-    border: 1px solid #333;
+    border: none;
     border-radius: 5px;
 }
