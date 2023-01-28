@@ -15,35 +15,44 @@
   }
   
   .login-form p {
-    display: flex;
-    flex-direction: column;
     font-weight: bold;
-    color: #808080;
     margin-bottom: 24px;
+    text-align: left;
   }
   
   .login-form p label {
+    opacity: .5;
     text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: 0;
+    padding: 0 16px 0 4px;
+    border-top-right-radius: 10px;
+    font-size: .9rem;
+    background-color: #ddd;
+    display: inline-block;
   }
   
   .login-form p input {
+    box-sizing: border-box;
+    display: block;
     width: 300px;
     padding: 8px 16px;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-weight: normal;
   }
   
   .login-form button {
+    margin-top: 20px;
     display: inline-block;
-    border: 1px solid #777;
+    border: none;
     border-radius: 5px;
-    color: #1105FF;
-    background-color: #B2C4FF;
+    color: #fff;
+    background-color: #007bff;
     font-weight: bold;
-    padding: 15px 24px;
+    padding: 8px 16px;
     cursor: pointer;
     transition: all .1s ease-in;  
     box-shadow: 1px 1px 7px #BFBFBF;
+    width: 100%;
   }
   .login-form button:active {
     opacity: .7;
