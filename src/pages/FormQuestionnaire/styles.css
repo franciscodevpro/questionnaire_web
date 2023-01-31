@@ -3,12 +3,12 @@
     margin-bottom: 24px;
 }
 .main-button .save-questionnaire {
-    background-color: #99f;
+    background-color: #9e9;
     padding: 8px 40px;
-    border: 1px solid #333;
+    border: 1px solid #9a9;
     border-radius: 5px;
     font-weight: bold;
-    color: #3730A3;
+    color: #fff;
 }
 
 .questionnaire-form {

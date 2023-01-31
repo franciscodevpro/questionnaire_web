@@ -482,7 +482,7 @@ export const FormQuestionnaire = ({
           </fieldset>
         </form>
         <button className="add" onClick={() => addQuestion()}>
-          +
+          Adicionar
         </button>
       </section>
     </Main>
